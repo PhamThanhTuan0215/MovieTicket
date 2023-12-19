@@ -16,19 +16,32 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ChangeInformationActivity"
+            android:label="@string/c_p_nh_t_t_i_kho_n"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:label="@string/ng_k1"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
+            android:label="@string/ng_nh_p1"
             android:exported="false" />
         <activity
             android:name=".HistoryActivity"
+            android:label="@string/l_ch_s_t_v"
             android:exported="false" />
         <activity
             android:name=".AccountActivity"
+            android:label="@string/t_i_kho_n"
             android:exported="false" />
         <activity
             android:name=".DetailsMovieActivity"
+            android:label="@string/th_ng_tin_chi_ti_t"
             android:exported="false" />
         <activity
             android:name=".HomeActivity"
+            android:label="@string/trang_ch"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
