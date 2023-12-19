@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -57,9 +55,8 @@ public class HomeActivity extends AppCompatActivity {
 
         dataMovies = new ArrayList<>();
         listMovies = new ArrayList<>();
-//        getDataMovies();
-
-        new DatabaseTask().execute();
+        getDataMovies();
+        
 
         adapter = new ArrayAdapter<Movie>(
                 this,
@@ -306,18 +303,5 @@ public class HomeActivity extends AppCompatActivity {
         listMovies.add(movie3);
         listMovies.add(movie4);
         listMovies.add(movie5);
-    }
-
-    private class DatabaseTask extends AsyncTask<Void, Void, String> {
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            return DatabaseExecutor.executeQuery();
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            Toast.makeText(HomeActivity.this, result, Toast.LENGTH_SHORT).show();
-        }
     }
 }
