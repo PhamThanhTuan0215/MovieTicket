@@ -149,7 +149,7 @@
                 android:id="@+id/imageView6"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:src="@drawable/baseline_home_24" />
+                android:src="@drawable/baseline_home_select_24" />
 
             <TextView
                 android:id="@+id/textView7"

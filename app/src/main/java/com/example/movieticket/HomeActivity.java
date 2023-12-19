@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -34,11 +35,10 @@ public class HomeActivity extends AppCompatActivity {
     Button btnSelectCategory, btnSelectActor, btnSelectAll;
     TextView tvStyleSearch;
     ListView listView;
-    LinearLayout areaHome, areaHistory, areaAccount, areaEmpty;
+    LinearLayout areaHistory, areaAccount, areaEmpty;
     ArrayAdapter<Movie> adapter;
     ArrayList<Movie> dataMovies;
-
-    final static int ViewDetailsCode = 1001;
+    ArrayList<Movie> listMovies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +52,14 @@ public class HomeActivity extends AppCompatActivity {
         tvStyleSearch = findViewById(R.id.tvStyleSearch);
         listView = findViewById(R.id.listView);
         areaEmpty = findViewById(R.id.areaEmpty);
-        areaHome = findViewById(R.id.areaHome);
         areaHistory = findViewById(R.id.areaHistory);
         areaAccount = findViewById(R.id.areaAccount);
 
         dataMovies = new ArrayList<>();
+        listMovies = new ArrayList<>();
+//        getDataMovies();
+
+        new DatabaseTask().execute();
 
         adapter = new ArrayAdapter<Movie>(
                 this,
@@ -140,35 +143,28 @@ public class HomeActivity extends AppCompatActivity {
                 String actor = String.join(", ", dataMovies.get(position).actor);
                 intent.putExtra("actor", actor);
 
-                startActivityForResult(intent, ViewDetailsCode);
-            }
-        });
-
-        areaHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(HomeActivity.this, "Trang chủ", Toast.LENGTH_SHORT).show();
+                startActivity(intent);
             }
         });
 
         areaHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(HomeActivity.this, "Lịch sử đặt vé", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomeActivity.this, HistoryActivity.class);
+                startActivity(intent);
             }
         });
 
         areaAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(HomeActivity.this, "Trang tài khoản cá nhân", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomeActivity.this, AccountActivity.class);
+                startActivity(intent);
             }
         });
     }
 
     private void loadDataMovies(String keyword, String category, String actor) {
-
-        ArrayList<Movie> listMovies = sampleData(); // sample data
 
         dataMovies.clear();
         areaEmpty.setVisibility(View.GONE);
@@ -254,8 +250,8 @@ public class HomeActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private ArrayList<Movie> sampleData() {
-        Movie movie1 = new Movie("M001",
+    private void getDataMovies() {
+        Movie movie1 = new Movie(1,
                 "Inception",
                 Arrays.asList("Sci-Fi", "Action"),
                 Arrays.asList("Leonardo DiCaprio", "Ellen Page"),
@@ -265,7 +261,7 @@ public class HomeActivity extends AppCompatActivity {
                 "https://m.media-amazon.com/images/M/MV5BZGFjOTRiYjgtYjEzMS00ZjQ2LTkzY2YtOGQ0NDI2NTVjOGFmXkEyXkFqcGdeQXVyNDQ5MDYzMTk@._V1_.jpg",
                 "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/YoHD9XEInc0?si=xyz8sHdECrZvQxZN\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>");
 
-        Movie movie2 = new Movie("M002",
+        Movie movie2 = new Movie(2,
                 "The Shawshank Redemption",
                 Arrays.asList("Drama"),
                 Arrays.asList("Tim Robbins", "Morgan Freeman"),
@@ -275,7 +271,7 @@ public class HomeActivity extends AppCompatActivity {
                 "https://m.media-amazon.com/images/M/MV5BMTc3NjM4MTY3MV5BMl5BanBnXkFtZTcwODk4Mzg3OA@@._V1_.jpg",
                 "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/PLl99DlL6b4?si=eCQrmW7yNoQbqSof\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>");
 
-        Movie movie3 = new Movie("M003",
+        Movie movie3 = new Movie(3,
                 "The Dark Knight",
                 Arrays.asList("Action", "Crime", "Drama"),
                 Arrays.asList("Christian Bale", "Heath Ledger"),
@@ -285,7 +281,7 @@ public class HomeActivity extends AppCompatActivity {
                 "https://m.media-amazon.com/images/M/MV5BMTkyMjQ4ODk1NF5BMl5BanBnXkFtZTcwMjcxMTk2Mw@@._V1_.jpg",
                 "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/_PZpmTj1Q8Q?si=R9netO7e6rWWKtYq\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>");
 
-        Movie movie4 = new Movie("M004",
+        Movie movie4 = new Movie(4,
                 "Forrest Gump",
                 Arrays.asList("Drama", "Romance"),
                 Arrays.asList("Tom Hanks", "Robin Wright"),
@@ -295,7 +291,7 @@ public class HomeActivity extends AppCompatActivity {
                 "https://m.media-amazon.com/images/M/MV5BODQ0NjYyOWMtOGE4ZS00MDUxLTgwYzYtNDE2YWY2ODIyNWIzXkEyXkFqcGdeQXVyMTYzMDM0NTU@._V1_.jpg",
                 "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/bLvqoHBptjg?si=N-d6jAj4rJwJtzH_\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>");
 
-        Movie movie5 = new Movie("M005",
+        Movie movie5 = new Movie(5,
                 "The Matrix",
                 Arrays.asList("Action", "Sci-Fi"),
                 Arrays.asList("Keanu Reeves", "Carrie-Anne Moss"),
@@ -305,13 +301,23 @@ public class HomeActivity extends AppCompatActivity {
                 "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg",
                 "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/vKQi3bBA1y8?si=0L2rvi0eZCCZkSpw\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>");
 
-        ArrayList<Movie> listMovies = new ArrayList<>();
         listMovies.add(movie1);
         listMovies.add(movie2);
         listMovies.add(movie3);
         listMovies.add(movie4);
         listMovies.add(movie5);
+    }
 
-        return listMovies;
+    private class DatabaseTask extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            return DatabaseExecutor.executeQuery();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(HomeActivity.this, result, Toast.LENGTH_SHORT).show();
+        }
     }
 }

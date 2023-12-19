@@ -32,7 +32,7 @@ public class DetailsMovieActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details_movie);
+        setContentView(R.layout.details_movie);
 
         imgViewDetail = findViewById(R.id.imgViewDetail);
         tvNameDetail = findViewById(R.id.tvNameDetail);
