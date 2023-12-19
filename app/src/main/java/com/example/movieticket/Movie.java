@@ -3,7 +3,7 @@ package com.example.movieticket;
 import java.util.List;
 
 public class Movie {
-    public Integer id;
+    public String id;
     public String name;
     public List<String> category;
     public List<String> actor;
@@ -16,7 +16,7 @@ public class Movie {
     public Movie() {
     }
 
-    public Movie(Integer id, String name, List<String> category, List<String> actor, String date, String description, double price, String url_avatar, String url_trailer) {
+    public Movie(String id, String name, List<String> category, List<String> actor, String date, String description, double price, String url_avatar, String url_trailer) {
         this.id = id;
         this.name = name;
         this.category = category;

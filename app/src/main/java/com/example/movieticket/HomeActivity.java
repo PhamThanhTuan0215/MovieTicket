@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,12 +21,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -56,7 +71,7 @@ public class HomeActivity extends AppCompatActivity {
         dataMovies = new ArrayList<>();
         listMovies = new ArrayList<>();
         getDataMovies();
-        
+
 
         adapter = new ArrayAdapter<Movie>(
                 this,
@@ -73,7 +88,6 @@ public class HomeActivity extends AppCompatActivity {
                 TextView tvDate = itemView.findViewById(R.id.tvDate);
                 TextView tvPrice = itemView.findViewById(R.id.tvPrice);
                 ImageView imgView = itemView.findViewById(R.id.imgView);
-
                 tvName.setText(dataMovies.get(position).name);
                 tvDate.setText(dataMovies.get(position).date);
                 DecimalFormat formatter = new DecimalFormat("#,### VND");
@@ -86,8 +100,6 @@ public class HomeActivity extends AppCompatActivity {
         };
 
         listView.setAdapter(adapter);
-
-        loadDataMovies(null, null, null);
 
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -131,6 +143,7 @@ public class HomeActivity extends AppCompatActivity {
                 Intent intent = new Intent(HomeActivity.this, DetailsMovieActivity.class);
                 intent.putExtra("id", dataMovies.get(position).id);
                 intent.putExtra("name", dataMovies.get(position).name);
+                intent.putExtra("date", dataMovies.get(position).date);
                 intent.putExtra("price", dataMovies.get(position).price);
                 intent.putExtra("description", dataMovies.get(position).description);
                 intent.putExtra("url_avatar", dataMovies.get(position).url_avatar);
@@ -248,60 +261,55 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void getDataMovies() {
-        Movie movie1 = new Movie(1,
-                "Inception",
-                Arrays.asList("Sci-Fi", "Action"),
-                Arrays.asList("Leonardo DiCaprio", "Ellen Page"),
-                "2010-07-16",
-                "A thief who enters the dreams of others to steal their secrets.",
-                150000,
-                "https://m.media-amazon.com/images/M/MV5BZGFjOTRiYjgtYjEzMS00ZjQ2LTkzY2YtOGQ0NDI2NTVjOGFmXkEyXkFqcGdeQXVyNDQ5MDYzMTk@._V1_.jpg",
-                "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/YoHD9XEInc0?si=xyz8sHdECrZvQxZN\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>");
 
-        Movie movie2 = new Movie(2,
-                "The Shawshank Redemption",
-                Arrays.asList("Drama"),
-                Arrays.asList("Tim Robbins", "Morgan Freeman"),
-                "1994-09-23",
-                "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
-                120000,
-                "https://m.media-amazon.com/images/M/MV5BMTc3NjM4MTY3MV5BMl5BanBnXkFtZTcwODk4Mzg3OA@@._V1_.jpg",
-                "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/PLl99DlL6b4?si=eCQrmW7yNoQbqSof\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>");
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url("https://api-movie-ticket.onrender.com/movies").build();
+        client.newCall(request).enqueue(new Callback() {
 
-        Movie movie3 = new Movie(3,
-                "The Dark Knight",
-                Arrays.asList("Action", "Crime", "Drama"),
-                Arrays.asList("Christian Bale", "Heath Ledger"),
-                "2008-07-18",
-                "When the menace known as The Joker emerges from his mysterious past, he wreaks havoc and chaos on the people of Gotham.",
-                110000,
-                "https://m.media-amazon.com/images/M/MV5BMTkyMjQ4ODk1NF5BMl5BanBnXkFtZTcwMjcxMTk2Mw@@._V1_.jpg",
-                "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/_PZpmTj1Q8Q?si=R9netO7e6rWWKtYq\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>");
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Log.d("onFailure", e.getMessage());
+            }
+            @Override
+            public void onResponse(Call call, final Response response)
+                    throws IOException {
+                try {
+                    String responseData = response.body().string();
+                    JSONObject json = new JSONObject(responseData);
+                    JSONArray dataArray = json.getJSONArray("data");
 
-        Movie movie4 = new Movie(4,
-                "Forrest Gump",
-                Arrays.asList("Drama", "Romance"),
-                Arrays.asList("Tom Hanks", "Robin Wright"),
-                "1994-07-06",
-                "The presidencies of Kennedy and Johnson, the Vietnam War, the Watergate scandal, and other historical events unfold from the perspective of an Alabama man with an IQ of 75.",
-                200000,
-                "https://m.media-amazon.com/images/M/MV5BODQ0NjYyOWMtOGE4ZS00MDUxLTgwYzYtNDE2YWY2ODIyNWIzXkEyXkFqcGdeQXVyMTYzMDM0NTU@._V1_.jpg",
-                "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/bLvqoHBptjg?si=N-d6jAj4rJwJtzH_\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>");
+                    for (int i = 0; i < dataArray.length(); i++) {
+                        JSONObject movieObject = dataArray.getJSONObject(i);
 
-        Movie movie5 = new Movie(5,
-                "The Matrix",
-                Arrays.asList("Action", "Sci-Fi"),
-                Arrays.asList("Keanu Reeves", "Carrie-Anne Moss"),
-                "1999-03-31",
-                "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.",
-                100000,
-                "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg",
-                "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/vKQi3bBA1y8?si=0L2rvi0eZCCZkSpw\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>");
+                        String id = movieObject.getString("_id");
+                        String name = movieObject.getString("name");
+                        String listCategory = movieObject.getString("category");
+                        String listActor = movieObject.getString("actor");
+                        String date = movieObject.getString("date");
+                        String description = movieObject.getString("description");
+                        Double price = movieObject.getDouble("price");
+                        String url_avatar = movieObject.getString("url_avatar");
+                        String url_trailer = movieObject.getString("url_trailer");
 
-        listMovies.add(movie1);
-        listMovies.add(movie2);
-        listMovies.add(movie3);
-        listMovies.add(movie4);
-        listMovies.add(movie5);
+                        List<String> category = new ArrayList<>(Arrays.asList(listCategory.split(",")));
+                        List<String> actor = new ArrayList<>(Arrays.asList(listActor.split(",")));
+
+                        Movie movie = new Movie(id, name, category, actor, date, description, price, url_avatar, url_trailer);
+                        listMovies.add(movie);
+                    }
+
+                    Log.d("success", "success");
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadDataMovies(null, null, null);
+                        }
+                    });
+                } catch (JSONException e) {
+                    Log.d("onResponse", e.getMessage());
+                }
+            }
+        });
     }
 }

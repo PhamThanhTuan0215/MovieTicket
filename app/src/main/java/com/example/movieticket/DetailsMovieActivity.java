@@ -23,7 +23,7 @@ import java.text.DecimalFormat;
 public class DetailsMovieActivity extends AppCompatActivity {
 
     ImageView imgViewDetail;
-    TextView tvNameDetail, tvCategory, tvActor, tvDate, tvPrice, tvDescription;
+    TextView tvNameDetail, tvCategory, tvActor, tvDateDetail, tvPrice, tvDescription;
     WebView webViewTrailer;
     ScrollView scrollView;
 
@@ -38,7 +38,7 @@ public class DetailsMovieActivity extends AppCompatActivity {
         tvNameDetail = findViewById(R.id.tvNameDetail);
         tvCategory = findViewById(R.id.tvCategory);
         tvActor = findViewById(R.id.tvActor);
-        tvDate = findViewById(R.id.tvDateDetail);
+        tvDateDetail = findViewById(R.id.tvDateDetail);
         tvPrice = findViewById(R.id.tvPriceDetail);
         tvDescription = findViewById(R.id.tvDescription);
         webViewTrailer = findViewById(R.id.webViewTrailer);
@@ -50,6 +50,7 @@ public class DetailsMovieActivity extends AppCompatActivity {
         tvNameDetail.setText(intent.getStringExtra("name"));
         tvCategory.setText(intent.getStringExtra("category"));
         tvActor.setText(intent.getStringExtra("actor"));
+        tvDateDetail.setText(intent.getStringExtra("date"));
         tvPrice.setText(covertPrice(intent.getDoubleExtra("price", 0)));
         tvDescription.setText(intent.getStringExtra("description"));
         String url_avatar = intent.getStringExtra("url_avatar");
