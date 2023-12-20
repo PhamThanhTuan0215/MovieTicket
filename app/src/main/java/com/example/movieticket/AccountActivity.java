@@ -23,16 +23,15 @@ import android.widget.Toast;
 
 public class AccountActivity extends AppCompatActivity {
 
-    SharedPreferences myPrefs;
     LinearLayout areaCoin, areaHome, areaHistory, areaInformation, areaLoginRegister;
     TextView tvCoin, tvUsername, tvEmail, tvPhone;
     Button btnLogin, btnRegister, btnLogout, btnChangeInformation;
-    static String id = "";
-    static int coin = 0;
-    String username, email, phone, password;
+    int coin = 0;
+    String id, username, email, phone, password;
     final static int LoginCode = 1001;
     final static int RegisterCode = 1002;
     final static int ChaneInformationCode = 1003;
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +52,7 @@ public class AccountActivity extends AppCompatActivity {
         btnLogout = findViewById(R.id.btnLogout);
         btnChangeInformation = findViewById(R.id.btnChangeInformation);
 
-        myPrefs = getSharedPreferences("my_prefs", Activity.MODE_PRIVATE);
-        id = myPrefs.getString("id", "");
-        coin = myPrefs.getInt("coin", 0);
-        username = myPrefs.getString("username", "");
-        email = myPrefs.getString("email", "");
-        phone = myPrefs.getString("phone", "");
-        password = myPrefs.getString("password", "");
+        sessionManager = new SessionManager(AccountActivity.this);
 
         checkLogin();
 
@@ -126,7 +119,7 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     private void checkLogin() {
-        if(id.equals("")) {
+        if(!sessionManager.isLoggedIn()) {
             tvCoin.setText("0");
             tvUsername.setText("");
             tvEmail.setText("");
@@ -137,6 +130,13 @@ public class AccountActivity extends AppCompatActivity {
         }
 
         else {
+            id = sessionManager.getUserId();
+            coin = sessionManager.getCoin();
+            username = sessionManager.getUsername();
+            email = sessionManager.getEmail();
+            phone = sessionManager.getPhone();
+            password = sessionManager.getPassword();
+
             areaLoginRegister.setVisibility(View.GONE);
             areaInformation.setVisibility(View.VISIBLE);
 
@@ -155,22 +155,7 @@ public class AccountActivity extends AppCompatActivity {
                 .setPositiveButton("Có", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences.Editor editor = myPrefs.edit();
-                        editor.putString("id", "");
-                        editor.putInt("coin", 0);
-                        editor.putString("username", "");
-                        editor.putString("email", "");
-                        editor.putString("phone", "");
-                        editor.putString("password", "");
-                        editor.commit();
-
-                        id = "";
-                        coin = 0;
-                        username = "";
-                        email = "";
-                        phone = "";
-                        password = "";
-
+                        sessionManager.logout();
                         checkLogin();
                     }
                 })
@@ -184,6 +169,19 @@ public class AccountActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle("Trạng thái đăng ký")
                 .setMessage("Đăng ký tài khoản thành công")
+                .setIcon(R.drawable.baseline_update_success)
+                .setPositiveButton("Đóng", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).show();
+    }
+
+    private void showDialogUpdateSuccess() throws Resources.NotFoundException {
+        new AlertDialog.Builder(this)
+                .setTitle("Trạng thái cập nhật")
+                .setMessage("Cập nhật thông tin tài khoản thành công")
                 .setIcon(R.drawable.baseline_update_success)
                 .setPositiveButton("Đóng", new DialogInterface.OnClickListener() {
                     @Override
@@ -244,19 +242,15 @@ public class AccountActivity extends AppCompatActivity {
             phone = data.getStringExtra("phone");
             password = data.getStringExtra("password");
 
-            SharedPreferences.Editor editor = myPrefs.edit();
-            editor.putString("id", id);
-            editor.putInt("coin", coin);
-            editor.putString("username", username);
-            editor.putString("email", email);
-            editor.putString("phone", phone);
-            editor.putString("password", password);
-            editor.commit();
+            sessionManager.login(id, username, email, phone, password, coin);
 
             checkLogin();
 
             if(requestCode == RegisterCode) {
                 showDialogRegisterSuccess();
+            }
+            else if(requestCode == ChaneInformationCode) {
+                showDialogUpdateSuccess();
             }
         }
     }

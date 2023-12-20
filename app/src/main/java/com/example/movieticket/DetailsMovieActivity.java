@@ -3,7 +3,11 @@ package com.example.movieticket;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +16,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,7 +79,20 @@ public class DetailsMovieActivity extends AppCompatActivity {
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(DetailsMovieActivity.this, "Mở activity đặt vé", Toast.LENGTH_SHORT).show();
+                SessionManager sessionManager = new SessionManager(DetailsMovieActivity.this);
+                if(!sessionManager.isLoggedIn()) {
+                    showDialogRequestLogin();
+                }
+                else {
+                    Intent intentOrder = new Intent(DetailsMovieActivity.this, OrderActivity.class);
+                    intentOrder.putExtra("id", intent.getStringExtra("id"));
+                    intentOrder.putExtra("name", intent.getStringExtra("name"));
+                    intentOrder.putExtra("date", intent.getStringExtra("date"));
+                    intentOrder.putExtra("price", intent.getDoubleExtra("price", 0));
+
+
+                    startActivity(intentOrder);
+                }
             }
         });
     }
@@ -92,18 +110,45 @@ public class DetailsMovieActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.details_menu, menu);
+        getMenuInflater().inflate(R.menu.back_menu, menu);
         return true;
     }
 
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if(id == R.id.details_menu_back) {
+        if(id == R.id.menu_back) {
             finish();
             return true;
         }
 
         return false;
+    }
+
+    private void showDialogRequestLogin() throws Resources.NotFoundException {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        TextView tvNotification = new TextView(this);
+        tvNotification.setText("Vui lòng đăng nhập");
+        tvNotification.setTextSize(20);
+        tvNotification.setTextColor(Color.parseColor("#FFEA0909"));
+        layout.addView(tvNotification);
+        layout.setPadding(30, 0, 30, 0);
+        alertDialog.setView(layout);
+
+        alertDialog.setPositiveButton("Đăng nhập", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(DetailsMovieActivity.this, AccountActivity.class);
+                startActivity(intent);
+            }
+        });
+        alertDialog.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {}
+        });;
+        alertDialog.show();
     }
 }

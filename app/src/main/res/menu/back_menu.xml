@@ -4,7 +4,7 @@
     android:gravity="center">
 
     <item
-        android:id="@+id/details_menu_back"
+        android:id="@+id/menu_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/baseline_keyboard_backspace_24"

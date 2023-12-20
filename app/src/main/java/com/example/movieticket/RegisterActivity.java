@@ -84,14 +84,14 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.details_menu, menu);
+        getMenuInflater().inflate(R.menu.back_menu, menu);
         return true;
     }
 
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if(id == R.id.details_menu_back) {
+        if(id == R.id.menu_back) {
             setResult(RESULT_CANCELED);
             finish();
             return true;
