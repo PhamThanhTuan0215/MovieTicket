@@ -29,10 +29,11 @@ import okhttp3.Response;
 
 public class ChangeInformationActivity extends AppCompatActivity {
 
-    EditText edtUsername, edtEmail, edtPassword, edtPasswordConfirm;
+    EditText edtUsername, edtEmail, edtPhone, edtPassword, edtPasswordConfirm;
     Button btnUpdate;
     TextView tvError;
-    String id, username, password, email, error;
+    String id, username, password, email, phone, error;
+    int coin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +41,7 @@ public class ChangeInformationActivity extends AppCompatActivity {
 
         edtUsername = findViewById(R.id.edtUsernameChange);
         edtEmail = findViewById(R.id.edtEmailChange);
+        edtPhone = findViewById(R.id.edtPhoneChange);
         edtPassword = findViewById(R.id.edtPasswordChange);
         edtPasswordConfirm = findViewById(R.id.edtConfirmChange);
         btnUpdate = findViewById(R.id.btnUpdate);
@@ -51,6 +53,7 @@ public class ChangeInformationActivity extends AppCompatActivity {
 
         edtUsername.setText(getIntent().getStringExtra("username"));
         edtEmail.setText(getIntent().getStringExtra("email"));
+        edtPhone.setText(getIntent().getStringExtra("phone"));
         edtPassword.setText(getIntent().getStringExtra("password"));
         edtPasswordConfirm.setText(getIntent().getStringExtra("password"));
 
@@ -68,6 +71,10 @@ public class ChangeInformationActivity extends AppCompatActivity {
                 else if(!edtEmail.getText().toString().contains("@")) {
                     tvError.setVisibility(View.VISIBLE);
                     tvError.setText("Email không hợp lệ");
+                }
+                else if(edtPhone.getText().toString().length() < 5) {
+                    tvError.setVisibility(View.VISIBLE);
+                    tvError.setText("Số điện thoại phải có ít nhất 5 kí tự");
                 }
                 else if(edtPassword.getText().toString().length() < 5) {
                     tvError.setVisibility(View.VISIBLE);
@@ -109,9 +116,11 @@ public class ChangeInformationActivity extends AppCompatActivity {
         else {
             Intent replyIntent = new Intent();
             replyIntent.putExtra("id", id);
+            replyIntent.putExtra("coin", coin);
             replyIntent.putExtra("username", username);
             replyIntent.putExtra("password", password);
             replyIntent.putExtra("email", email);
+            replyIntent.putExtra("phone", phone);
             setResult(RESULT_OK, replyIntent);
             finish();
         }
@@ -124,6 +133,7 @@ public class ChangeInformationActivity extends AppCompatActivity {
         builder.add("id", id);
         builder.add("username", edtUsername.getText().toString());
         builder.add("email", edtEmail.getText().toString());
+        builder.add("phone", edtPhone.getText().toString());
         builder.add("password", edtPassword.getText().toString());
         RequestBody formBody = builder.build();
 
@@ -147,8 +157,10 @@ public class ChangeInformationActivity extends AppCompatActivity {
                     if(code == 0) {
                         JSONObject account = json.getJSONObject("data");
                         id = account.getString("_id");
+                        coin = account.getInt("coin");
                         username = account.getString("username");
                         email = account.getString("email");
+                        phone = account.getString("phone");
                         password = account.getString("password");
                         error = "";
                     }

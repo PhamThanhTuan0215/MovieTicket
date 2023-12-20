@@ -37,7 +37,8 @@ public class LoginActivity extends AppCompatActivity {
     EditText edtUsername, edtPassword;
     Button btnLogin;
     TextView tvError;
-    String id, username, password, email, error;
+    String id, username, password, email, phone, error;
+    int coin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,9 +95,11 @@ public class LoginActivity extends AppCompatActivity {
         else {
             Intent replyIntent = new Intent();
             replyIntent.putExtra("id", id);
+            replyIntent.putExtra("coin", coin);
             replyIntent.putExtra("username", username);
             replyIntent.putExtra("password", password);
             replyIntent.putExtra("email", email);
+            replyIntent.putExtra("phone", phone);
             setResult(RESULT_OK, replyIntent);
             finish();
         }
@@ -130,8 +133,10 @@ public class LoginActivity extends AppCompatActivity {
                     if(code == 0) {
                         JSONObject account = json.getJSONObject("data");
                         id = account.getString("_id");
+                        coin = account.getInt("coin");
                         username = account.getString("username");
                         email = account.getString("email");
+                        phone = account.getString("phone");
                         password = account.getString("password");
                         error = "";
                     }

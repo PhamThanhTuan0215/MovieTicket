@@ -29,10 +29,11 @@ import okhttp3.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText edtUsername, edtEmail, edtPassword, edtPasswordConfirm;
+    EditText edtUsername, edtEmail, edtPhone, edtPassword, edtPasswordConfirm;
     Button btnRegister;
     TextView tvError;
-    String id, username, password, email, error;
+    String id, username, password, email, phone, error;
+    int coin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         edtUsername = findViewById(R.id.edtUsernameRegister);
         edtEmail = findViewById(R.id.edtEmailRegister);
+        edtPhone = findViewById(R.id.edtPhoneRegister);
         edtPassword = findViewById(R.id.edtPasswordRegister);
         edtPasswordConfirm = findViewById(R.id.edtPasswordConfirm);
         btnRegister = findViewById(R.id.btnRegister);
@@ -61,6 +63,10 @@ public class RegisterActivity extends AppCompatActivity {
                 else if(!edtEmail.getText().toString().contains("@")) {
                     tvError.setVisibility(View.VISIBLE);
                     tvError.setText("Email không hợp lệ");
+                }
+                else if(edtPhone.getText().toString().length() < 5) {
+                    tvError.setVisibility(View.VISIBLE);
+                    tvError.setText("Số điện thoại phải có ít nhất 5 kí tự");
                 }
                 else if(edtPassword.getText().toString().length() < 5) {
                     tvError.setVisibility(View.VISIBLE);
@@ -102,9 +108,11 @@ public class RegisterActivity extends AppCompatActivity {
         else {
             Intent replyIntent = new Intent();
             replyIntent.putExtra("id", id);
+            replyIntent.putExtra("coin", 0);
             replyIntent.putExtra("username", username);
             replyIntent.putExtra("password", password);
             replyIntent.putExtra("email", email);
+            replyIntent.putExtra("phone", phone);
             setResult(RESULT_OK, replyIntent);
             finish();
         }
@@ -116,6 +124,7 @@ public class RegisterActivity extends AppCompatActivity {
         FormBody.Builder builder = new FormBody.Builder();
         builder.add("username", edtUsername.getText().toString());
         builder.add("email", edtEmail.getText().toString());
+        builder.add("phone", edtPhone.getText().toString());
         builder.add("password", edtPassword.getText().toString());
         RequestBody formBody = builder.build();
 
@@ -139,8 +148,10 @@ public class RegisterActivity extends AppCompatActivity {
                     if(code == 0) {
                         JSONObject account = json.getJSONObject("data");
                         id = account.getString("_id");
+                        coin = account.getInt("coin");
                         username = account.getString("username");
                         email = account.getString("email");
+                        phone = account.getString("phone");
                         password = account.getString("password");
                         error = "";
                     }

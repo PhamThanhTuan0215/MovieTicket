@@ -12,7 +12,7 @@
         android:id="@+id/tvUsernameRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="10dp"
         android:drawableLeft="@drawable/baseline_person_24"
         android:drawablePadding="20dp"
         android:text="@string/t_n_t_i_kho_n"
@@ -48,6 +48,28 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/nh_p_email"
+        android:inputType="text"
+        android:paddingHorizontal="15dp"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/tvPhoneRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:drawableLeft="@drawable/baseline_phone_24"
+        android:drawablePadding="20dp"
+        android:text="@string/s_i_n_tho_i"
+        android:textColor="#099585"
+        android:textSize="20dp"
+        android:textStyle="italic" />
+
+    <EditText
+        android:id="@+id/edtPhoneRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Nhập số điện thoại"
         android:inputType="text"
         android:paddingHorizontal="15dp"
         android:textSize="25dp" />
