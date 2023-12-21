@@ -58,8 +58,18 @@ public class SessionManager {
         return sharedPreferences.getInt(KEY_COIN, 0);
     }
 
-    public void setCoin(int coin) {
-        editor.putInt(KEY_COIN, coin);
+    public void minusCoins() {
+        editor.putInt(KEY_COIN, getCoin() - 100);
+        editor.apply();
+    }
+
+    public void bonusCoins(double price) {
+        int bonusCoin = 0;
+        while (price >= 100000.0) {
+            price = price - 100000.0;
+            bonusCoin += 10;
+        }
+        editor.putInt(KEY_COIN, getCoin() + bonusCoin);
         editor.apply();
     }
 

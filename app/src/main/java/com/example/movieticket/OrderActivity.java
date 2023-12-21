@@ -11,11 +11,6 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.Layout;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.AlignmentSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,9 +50,9 @@ import okhttp3.Response;
 
 public class OrderActivity extends AppCompatActivity {
 
-    TextView tvName, tvDate, tvPrice, tvShift, tvNumber, tvTotalPrice;
+    TextView tvName, tvDate, tvPrice, tvShift, tvQuantity, tvTotalPrice;
     Button btnSelectShift, btnConfirm;
-    Spinner spinnerMethod;
+    Spinner spinnerCinema, spinnerMethod;
     CheckBox cbCoin;
     ScrollView scrollView;
     GridView gridviewPosition;
@@ -67,10 +62,11 @@ public class OrderActivity extends AppCompatActivity {
     ArrayList<Shift> listShift = new ArrayList<>();
     ArrayList<String> listPositionSelected = new ArrayList<>();
     ArrayList<String> listPositionCurrent = new ArrayList<>();
-    String id, name, date;
+    String id, name, date, url_avatar;
     Double price, totalPrice;
-    int number;
-    String method;
+    int quantity;
+    String cinema, method;
+    final String[] listCinema = {"CGV Cinemas", "Lotte Cinema", "Galaxy Cinema", "BHD Star Cineplex", "Vincom Cinema", "MegaGS Cinemas", "Dcine", "Cinebox"};
     final String[] listMethod = {"Tiền mặt", "Thẻ tín dụng", "Ví điện tử"};
     DecimalFormat formatter;
     boolean isUseCoin = false;
@@ -84,10 +80,11 @@ public class OrderActivity extends AppCompatActivity {
         tvDate = findViewById(R.id.tvDate);
         tvPrice = findViewById(R.id.tvPrice);
         tvShift = findViewById(R.id.tvShift);
-        tvNumber = findViewById(R.id.tvNumber);
+        tvQuantity = findViewById(R.id.tvQuantity);
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
         btnSelectShift = findViewById(R.id.btnSelectShift);
         btnConfirm = findViewById(R.id.btnConfirm);
+        spinnerCinema = findViewById(R.id.spinnerCinema);
         spinnerMethod = findViewById(R.id.spinnerMethod);
         scrollView = findViewById(R.id.scrollView);
         cbCoin = findViewById(R.id.cbCoin);
@@ -100,13 +97,14 @@ public class OrderActivity extends AppCompatActivity {
         id = intent.getStringExtra("id");
         name = intent.getStringExtra("name");
         date = intent.getStringExtra("date");
+        url_avatar = intent.getStringExtra("url_avatar");
         price = intent.getDoubleExtra("price", 0);
 
         tvName.setText(name);
         tvDate.setText(date);
         formatter = new DecimalFormat("#,### VND");
         tvPrice.setText(formatter.format(price));
-        tvNumber.setText("0");
+        tvQuantity.setText("0");
         tvTotalPrice.setText("0 VND");
 
         for(int i=1;i<=30;i++) {
@@ -143,8 +141,8 @@ public class OrderActivity extends AppCompatActivity {
                                 btnPosition.setBackgroundColor(Color.parseColor("#4EB2BF"));
                             }
 
-                            number = listPositionCurrent.size();
-                            tvNumber.setText(number + "");
+                            quantity = listPositionCurrent.size();
+                            tvQuantity.setText(quantity + "");
                             totalPrice = listPositionCurrent.size() * price;
                             if(isUseCoin) {
                                 totalPrice = totalPrice * 0.5;
@@ -201,6 +199,34 @@ public class OrderActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parentView) {}
         });
 
+        ArrayAdapter<String> adapterCinema = new ArrayAdapter<String>(this, R.layout.custom_spinner_item, listCinema) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView textView = view.findViewById(android.R.id.text1);
+                textView.setTextSize(20);
+                return view;
+            }
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView textView = view.findViewById(android.R.id.text1);
+                textView.setTextSize(20);
+                return view;
+            }
+        };
+
+        adapterCinema.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCinema.setAdapter(adapterCinema);
+        spinnerCinema.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                cinema = (String) parentView.getItemAtPosition(position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {}
+        });
+
         btnSelectShift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -241,7 +267,7 @@ public class OrderActivity extends AppCompatActivity {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(number <= 0) {
+                if(quantity <= 0) {
                     Toast.makeText(OrderActivity.this, "Vui lòng chọn chỗ ngồi", Toast.LENGTH_SHORT).show();
                 }
                 else {
@@ -325,8 +351,8 @@ public class OrderActivity extends AppCompatActivity {
     private void loadDataPosition(String time) {
         listPositionCurrent.clear();
         listPositionSelected.clear();
-        number = 0;
-        tvNumber.setText("0");
+        quantity = 0;
+        tvQuantity.setText("0");
         totalPrice = 0.0;
         tvTotalPrice.setText("0 VND");
         cbCoin.setChecked(false);
@@ -465,7 +491,28 @@ public class OrderActivity extends AppCompatActivity {
         timeLayout.addView(tvTime);
         outerLayout.addView(timeLayout);
 
-        //number
+        //cinema
+        LinearLayout cinemaLayout = new LinearLayout(this);
+        cinemaLayout.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayout.LayoutParams cinemaLayoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        cinemaLayoutParams.setMargins(0, 10, 0, 0);
+        cinemaLayout.setLayoutParams(cinemaLayoutParams);
+        TextView tvTitleCinema = new TextView(this);
+        tvTitleCinema.setText(Html.fromHtml("<i>Tên rạp:</i>"));
+        tvTitleCinema.setTextSize(20);
+        tvTitleCinema.setWidth(350);
+        cinemaLayout.addView(tvTitleCinema);
+        TextView tvCinema = new TextView(this);
+        tvCinema.setText(Html.fromHtml("<b>" + cinema + "</b>"));
+        tvCinema.setTextSize(20);
+        tvCinema.setTextColor(Color.BLACK);
+        cinemaLayout.addView(tvCinema);
+        outerLayout.addView(cinemaLayout);
+
+        //quantity
         LinearLayout numberTicketLayout = new LinearLayout(this);
         numberTicketLayout.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayout.LayoutParams numberLayoutParams = new LinearLayout.LayoutParams(
@@ -480,7 +527,7 @@ public class OrderActivity extends AppCompatActivity {
         tvTitleNumberTicket.setWidth(350);
         numberTicketLayout.addView(tvTitleNumberTicket);
         TextView tvNumberTicket = new TextView(this);
-        tvNumberTicket.setText(Html.fromHtml("<b>" + tvNumber.getText().toString() + "</b>"));
+        tvNumberTicket.setText(Html.fromHtml("<b>" + quantity + "</b>"));
         tvNumberTicket.setTextSize(20);
         tvNumberTicket.setTextColor(Color.BLACK);
         numberTicketLayout.addView(tvNumberTicket);
@@ -562,7 +609,7 @@ public class OrderActivity extends AppCompatActivity {
         alertDialog.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                payment();
+                requestPayment();
             }
         });
 
@@ -577,16 +624,84 @@ public class OrderActivity extends AppCompatActivity {
     }
 
 
-    private void payment() {
-        if(method.equals(listMethod[0])) {
+    private void requestPayment() {
+        if(method.equals(listMethod[0])) { // tiền mặt
+            payment();
+        }
+        else if(method.equals(listMethod[1])) { // thẻ tín dụng
+            // sử lý tính năng thẻ tính dụng sau đó gọi phương thức payment
             Toast.makeText(OrderActivity.this, "Sử dụng " + method, Toast.LENGTH_SHORT).show();
         }
-        else if(method.equals(listMethod[1])) {
-            Toast.makeText(OrderActivity.this, "Sử dụng " + method, Toast.LENGTH_SHORT).show();
-        }
-        else if(method.equals(listMethod[2])) {
+        else if(method.equals(listMethod[2])) { // vé điện tử
+            // sử lý tính năng vé điện tử sau đó gọi phương thức payment
             Toast.makeText(OrderActivity.this, "Sử dụng " + method, Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private void payment() {
+        SessionManager sessionManager = new SessionManager(this);
+
+        OkHttpClient client = new OkHttpClient();
+
+        FormBody.Builder builder = new FormBody.Builder();
+        builder.add("username", sessionManager.getUsername());
+        builder.add("movieId", id);
+        builder.add("movieName", name);
+        builder.add("date", date);
+        builder.add("url_avatar", url_avatar);
+        builder.add("shift", tvShift.getText().toString());
+        builder.add("cinema", cinema);
+        builder.add("quantity", quantity + "");
+        builder.add("selected", String.join(",", listPositionCurrent));
+        builder.add("method", method);
+        builder.add("totalPrice", totalPrice + "");
+        builder.add("coin", isUseCoin + "");
+        RequestBody formBody = builder.build();
+
+        Request request = new Request.Builder().url("https://api-movie-ticket.onrender.com/orders/add")
+                .post(formBody)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Log.d("onFailure", e.getMessage());
+            }
+            @Override
+            public void onResponse(Call call, final Response response)
+                    throws IOException {
+                try {
+                    String responseData = response.body().string();
+                    JSONObject json = new JSONObject(responseData);
+                    int code = json.getInt("code");
+                    String message = json.getString("message");
+
+                    if(code == 0) {
+                        if(isUseCoin) {
+                            sessionManager.minusCoins();
+                        }
+                        sessionManager.bonusCoins(totalPrice);
+                    }
+
+                    Log.d("success", "success");
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(code == 0) {
+                                setResult(RESULT_OK);
+                                finish();
+                            }
+                            if(code == 2) {
+                                Toast.makeText(OrderActivity.this, "Thanh toán thất bại", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                } catch (JSONException e) {
+                    Log.d("onResponse", e.getMessage());
+                }
+            }
+        });
     }
 }

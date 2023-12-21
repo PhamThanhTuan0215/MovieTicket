@@ -21,4 +21,7 @@
     <string name="c_p_nh_t_t_i_kho_n">Cập nhật tài khoản</string>
     <string name="th_ng_tin_chi_ti_t">Thông tin chi tiết</string>
     <string name="s_i_n_tho_i">Số điện thoại</string>
+    <string name="v_i_n_t">Vé điện tử</string>
+    <string name="t_v">Đặt vé</string>
+    <string name="nh_gi">Đánh giá</string>
 </resources>

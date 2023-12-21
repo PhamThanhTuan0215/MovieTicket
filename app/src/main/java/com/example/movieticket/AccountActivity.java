@@ -246,11 +246,17 @@ public class AccountActivity extends AppCompatActivity {
 
             checkLogin();
 
-            if(requestCode == RegisterCode) {
-                showDialogRegisterSuccess();
+            if(getIntent().getBooleanExtra("requestLogin", false)) {
+                setResult(RESULT_OK);
+                finish();
             }
-            else if(requestCode == ChaneInformationCode) {
-                showDialogUpdateSuccess();
+            else {
+                if(requestCode == RegisterCode) {
+                    showDialogRegisterSuccess();
+                }
+                else if(requestCode == ChaneInformationCode) {
+                    showDialogUpdateSuccess();
+                }
             }
         }
     }

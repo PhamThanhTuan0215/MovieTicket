@@ -1,6 +1,7 @@
 package com.example.movieticket;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -33,6 +34,8 @@ public class DetailsMovieActivity extends AppCompatActivity {
     ScrollView scrollView;
 
     Button btnOrder, btnPlay;
+    final int requestLoginCode = 1001;
+    final int orderCode = 1002;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,10 +91,10 @@ public class DetailsMovieActivity extends AppCompatActivity {
                     intentOrder.putExtra("id", intent.getStringExtra("id"));
                     intentOrder.putExtra("name", intent.getStringExtra("name"));
                     intentOrder.putExtra("date", intent.getStringExtra("date"));
+                    intentOrder.putExtra("url_avatar", intent.getStringExtra("url_avatar"));
                     intentOrder.putExtra("price", intent.getDoubleExtra("price", 0));
 
-
-                    startActivity(intentOrder);
+                    startActivityForResult(intentOrder, orderCode);
                 }
             }
         });
@@ -142,7 +145,8 @@ public class DetailsMovieActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(DetailsMovieActivity.this, AccountActivity.class);
-                startActivity(intent);
+                intent.putExtra("requestLogin", true);
+                startActivityForResult(intent, requestLoginCode);
             }
         });
         alertDialog.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
@@ -150,5 +154,16 @@ public class DetailsMovieActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {}
         });;
         alertDialog.show();
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK && requestCode == orderCode) {
+            Toast.makeText(this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
+        }
+        else if(resultCode == RESULT_OK && requestCode == requestLoginCode) {
+            Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+        }
     }
 }

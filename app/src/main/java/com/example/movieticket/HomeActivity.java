@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -63,7 +62,7 @@ public class HomeActivity extends AppCompatActivity {
         btnSelectActor = findViewById(R.id.btnSelectActor);
         btnSelectAll = findViewById(R.id.btnSelectAll);
         tvStyleSearch = findViewById(R.id.tvStyleSearch);
-        listView = findViewById(R.id.listView);
+        listView = findViewById(R.id.listViewMovie);
         areaEmpty = findViewById(R.id.areaEmpty);
         areaHistory = findViewById(R.id.areaHistory);
         areaAccount = findViewById(R.id.areaAccount);

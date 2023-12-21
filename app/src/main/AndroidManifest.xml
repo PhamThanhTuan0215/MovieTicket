@@ -16,8 +16,17 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".OrderActivity"
+            android:name=".ReviewActivity"
+            android:label="@string/nh_gi"
             android:exported="false" />
+        <activity
+            android:name=".ElectronicTicketActivity"
+            android:exported="false"
+            android:label="@string/v_i_n_t" />
+        <activity
+            android:name=".OrderActivity"
+            android:exported="false"
+            android:label="@string/t_v" />
         <activity
             android:name=".ChangeInformationActivity"
             android:exported="false"
