@@ -182,22 +182,34 @@
                 android:layout_height="350dp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textView16"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="Trailer"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btnPlay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:text="Xem trailer" />
+                    <TextView
+                        android:id="@+id/textView16"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="5dp"
+                        android:text="Trailer:"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnPlay"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:layout_marginHorizontal="20sp"
+                        android:textSize="18sp"
+                        android:padding="10sp"
+                        android:backgroundTint="#435BB3"
+                        android:text="Xem trailer" />
+                </LinearLayout>
 
                 <WebView
                     android:id="@+id/webViewTrailer"

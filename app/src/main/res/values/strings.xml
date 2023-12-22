@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">MovieTicket</string>
+    <string name="channel_name">Channel 1</string>
+    <string name="channel_description">This is channel</string>
     <string name="t_n_t_i_kho_n_kh_ng_t_n_t_i">Tên tài khoản không tồn tại</string>
     <string name="sai_m_t_kh_u">Sai mật khẩu</string>
     <string name="th_ng_b_o_l_i">Thông báo lỗi</string>
@@ -24,4 +26,6 @@
     <string name="v_i_n_t">Vé điện tử</string>
     <string name="t_v">Đặt vé</string>
     <string name="nh_gi">Đánh giá</string>
+    <string name="th_t_n_d_ng">Thẻ tín dụng</string>
+    <string name="paypal">PayPal</string>
 </resources>

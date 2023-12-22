@@ -67,9 +67,11 @@ public class OrderActivity extends AppCompatActivity {
     int quantity;
     String cinema, method;
     final String[] listCinema = {"CGV Cinemas", "Lotte Cinema", "Galaxy Cinema", "BHD Star Cineplex", "Vincom Cinema", "MegaGS Cinemas", "Dcine", "Cinebox"};
-    final String[] listMethod = {"Tiền mặt", "Thẻ tín dụng", "Ví điện tử"};
+    final String[] listMethod = {"Tiền mặt", "Thẻ tín dụng", "Ví điện tử (PayPal)"};
     DecimalFormat formatter;
     boolean isUseCoin = false;
+    final int CreditCardCode = 1001;
+    final int ElectronicWalletCode = 1002;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -625,18 +627,31 @@ public class OrderActivity extends AppCompatActivity {
 
 
     private void requestPayment() {
-        if(method.equals(listMethod[0])) { // tiền mặt
+        if(method.equals(listMethod[0])) { // cash
             payment();
         }
-        else if(method.equals(listMethod[1])) { // thẻ tín dụng
-            // sử lý tính năng thẻ tính dụng sau đó gọi phương thức payment
-            Toast.makeText(OrderActivity.this, "Sử dụng " + method, Toast.LENGTH_SHORT).show();
+        else if(method.equals(listMethod[1])) { // credit card
+            Intent creditCardIntent = new Intent(OrderActivity.this, CreditCardActivity.class);
+            creditCardIntent.putExtra("price", formatter.format(totalPrice));
+            startActivityForResult(creditCardIntent, CreditCardCode);
         }
-        else if(method.equals(listMethod[2])) { // vé điện tử
-            // sử lý tính năng vé điện tử sau đó gọi phương thức payment
-            Toast.makeText(OrderActivity.this, "Sử dụng " + method, Toast.LENGTH_SHORT).show();
+        else if(method.equals(listMethod[2])) { // E-Wallet
+            Intent paypalIntent = new Intent(OrderActivity.this, PayPalActivity.class);
+            paypalIntent.putExtra("price", formatter.format(totalPrice));
+            startActivityForResult(paypalIntent, ElectronicWalletCode);
         }
 
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK && requestCode == CreditCardCode) {
+            payment();
+        }
+        else if(resultCode == RESULT_OK && requestCode == ElectronicWalletCode) {
+            payment();
+        }
     }
 
     private void payment() {

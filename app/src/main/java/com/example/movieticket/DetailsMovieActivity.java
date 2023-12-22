@@ -152,7 +152,27 @@ public class DetailsMovieActivity extends AppCompatActivity {
         alertDialog.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {}
-        });;
+        });
+        alertDialog.show();
+    }
+
+    private void showDialogOrderSuccess() throws Resources.NotFoundException {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        TextView tvNotification = new TextView(this);
+        tvNotification.setText("Thanh toán thành công, kiểm tra trong lịch sử đặt vé");
+        tvNotification.setTextSize(20);
+        tvNotification.setTextColor(Color.parseColor("#FFEA0909"));
+        layout.addView(tvNotification);
+        layout.setPadding(30, 0, 30, 0);
+        alertDialog.setView(layout);
+
+        alertDialog.setPositiveButton("Đóng", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {}
+        });
         alertDialog.show();
     }
 
@@ -160,7 +180,7 @@ public class DetailsMovieActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode == RESULT_OK && requestCode == orderCode) {
-            Toast.makeText(this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
+            showDialogOrderSuccess();
         }
         else if(resultCode == RESULT_OK && requestCode == requestLoginCode) {
             Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();

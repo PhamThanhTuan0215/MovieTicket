@@ -39,6 +39,11 @@ public class Order implements Serializable {
 
     public String displayDataQRCode() {
         DecimalFormat formatter = new DecimalFormat("#,### VND");
-        return "Id: " + id + "\n" + "User: " + username + "\n" + "Date order: " + creation_date + "\n" + "Total price: " + formatter.format(totalPrice);
+        return  "id: '" + id + '\'' +
+                ", username: '" + username + '\'' +
+                ", movie name: '" + movieName + '\'' +
+                ", number of tickets: " + quantity +
+                ", method payment: '" + method + '\'' +
+                ", total price: " + formatter.format(totalPrice);
     }
 }

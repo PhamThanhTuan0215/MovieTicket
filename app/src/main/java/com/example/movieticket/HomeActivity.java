@@ -4,9 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -31,14 +35,23 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class HomeActivity extends AppCompatActivity {
@@ -70,7 +83,7 @@ public class HomeActivity extends AppCompatActivity {
         dataMovies = new ArrayList<>();
         listMovies = new ArrayList<>();
         getDataMovies();
-
+        getMoviesToReminder();
 
         adapter = new ArrayAdapter<Movie>(
                 this,
@@ -303,6 +316,117 @@ public class HomeActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             loadDataMovies(null, null, null);
+                        }
+                    });
+                } catch (JSONException e) {
+                    Log.d("onResponse", e.getMessage());
+                }
+            }
+        });
+    }
+
+    public void reminderMovie(String id, String movieName, String date) {
+        AlarmManager alarmManager;
+        PendingIntent pendingIntent;
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+        Date dateMovie = null;
+        try {
+            dateMovie = dateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+
+        if (date != null) {
+            calendar.setTime(dateMovie);
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+        }
+
+        Intent intent = new Intent(HomeActivity.this, ReminderReceiver.class);
+        intent.setAction("Reminder");
+        intent.putExtra("name", movieName);
+        intent.putExtra("date", date);
+
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        int hashValueId = id.hashCode();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, hashValueId, intent, PendingIntent.FLAG_IMMUTABLE);
+        } else {
+            pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, hashValueId, intent, PendingIntent.FLAG_MUTABLE);
+        }
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+        Log.d("message", "gửi nhắc nhở: " + movieName);
+    }
+
+    private void getMoviesToReminder() {
+        SessionManager sessionManager = new SessionManager(this);
+
+        if(!sessionManager.isLoggedIn()) {
+            return;
+        }
+
+        ArrayList<Reminder> listReminder = new ArrayList<>();
+
+        OkHttpClient client = new OkHttpClient();
+
+        FormBody.Builder builder = new FormBody.Builder();
+        builder.add("username", sessionManager.getUsername());
+        RequestBody formBody = builder.build();
+
+        Request request = new Request.Builder().url("https://api-movie-ticket.onrender.com/orders")
+                .post(formBody)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Log.d("onFailure", e.getMessage());
+            }
+            @Override
+            public void onResponse(Call call, final Response response)
+                    throws IOException {
+                try {
+                    String responseData = response.body().string();
+                    JSONObject json = new JSONObject(responseData);
+                    int code = json.getInt("code");
+
+                    if(code == 0) {
+                        JSONArray dataArray = json.getJSONArray("data");
+                        for (int i = 0; i < dataArray.length(); i++) {
+                            JSONObject orderObject = dataArray.getJSONObject(i);
+
+                            String id = orderObject.getString("_id");
+                            String movieName = orderObject.getString("movieName");
+                            String date = orderObject.getString("date");
+
+                            Reminder reminder = new Reminder(id, movieName, date);
+                            listReminder.add(reminder);
+                        }
+                    }
+
+                    Log.d("success", "success");
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(code == 0) {
+                                if(listReminder.size() > 0) {
+                                    for (int i = 0; i < listReminder.size(); i++) {
+                                        String idReminder = listReminder.get(i).id;
+                                        if(!sessionManager.getStatusReminderMovie(idReminder)) {
+                                            reminderMovie(idReminder, listReminder.get(i).movieName, listReminder.get(i).date);
+                                            sessionManager.setStatusReminderMovie(idReminder);
+                                        }
+                                    }
+                                }
+                            }
                         }
                     });
                 } catch (JSONException e) {
