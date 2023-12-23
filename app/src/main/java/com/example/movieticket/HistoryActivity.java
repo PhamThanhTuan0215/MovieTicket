@@ -4,9 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -15,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -27,6 +32,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -233,5 +239,53 @@ public class HistoryActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == R.id.menu_language) {
+            openSelectLanguage();
+            return true;
+        }
+
+        return false;
+    }
+
+    private void openSelectLanguage() {
+        String[] languageItems = { getString(R.string.ti_ng_vi_t), getString(R.string.ti_ng_anh), getString(R.string.ti_ng_h_n)};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(HistoryActivity.this);
+        builder.setItems(languageItems, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String language = languageItems[which];
+                if(language.equals(languageItems[0])) {
+                    changeLanguage("vn");
+                }
+                else if(language.equals(languageItems[1])) {
+                    changeLanguage("en");
+                }
+                else if(language.equals(languageItems[2])) {
+                    changeLanguage("kr");
+                }
+                HistoryActivity.this.recreate();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void changeLanguage(String language) {
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        Locale locale = new Locale(language);
+        configuration.setLocale(locale);
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
     }
 }

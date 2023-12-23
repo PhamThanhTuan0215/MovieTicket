@@ -134,14 +134,14 @@ public class DetailsMovieActivity extends AppCompatActivity {
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         TextView tvNotification = new TextView(this);
-        tvNotification.setText("Vui lòng đăng nhập");
+        tvNotification.setText(R.string.vui_l_ng_ng_nh_p);
         tvNotification.setTextSize(20);
         tvNotification.setTextColor(Color.parseColor("#FFEA0909"));
         layout.addView(tvNotification);
         layout.setPadding(30, 0, 30, 0);
         alertDialog.setView(layout);
 
-        alertDialog.setPositiveButton("Đăng nhập", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(R.string.ng_nh_p, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(DetailsMovieActivity.this, AccountActivity.class);
@@ -149,7 +149,7 @@ public class DetailsMovieActivity extends AppCompatActivity {
                 startActivityForResult(intent, requestLoginCode);
             }
         });
-        alertDialog.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton(R.string.h_y, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {}
         });
@@ -162,17 +162,27 @@ public class DetailsMovieActivity extends AppCompatActivity {
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         TextView tvNotification = new TextView(this);
-        tvNotification.setText("Thanh toán thành công, kiểm tra trong lịch sử đặt vé");
+        tvNotification.setText(R.string.thanh_to_n_th_nh_c_ng_ki_m_tra_trong_l_ch_s_t_v);
         tvNotification.setTextSize(20);
-        tvNotification.setTextColor(Color.parseColor("#FFEA0909"));
+        tvNotification.setTextColor(Color.parseColor("#49be25"));
         layout.addView(tvNotification);
         layout.setPadding(30, 0, 30, 0);
         alertDialog.setView(layout);
 
-        alertDialog.setPositiveButton("Đóng", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(R.string.ng, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {}
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
         });
+
+        alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                finish();
+            }
+        });
+
         alertDialog.show();
     }
 
@@ -183,7 +193,7 @@ public class DetailsMovieActivity extends AppCompatActivity {
             showDialogOrderSuccess();
         }
         else if(resultCode == RESULT_OK && requestCode == requestLoginCode) {
-            Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.ng_nh_p_th_nh_c_ng, Toast.LENGTH_SHORT).show();
         }
     }
 }

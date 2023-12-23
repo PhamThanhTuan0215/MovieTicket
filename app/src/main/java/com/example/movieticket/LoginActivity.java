@@ -52,11 +52,11 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(edtUsername.getText().toString().length() < 5) {
                     tvError.setVisibility(View.VISIBLE);
-                    tvError.setText("Tên tài khoản phải có ít nhất 5 kí tự");
+                    tvError.setText(R.string.t_n_t_i_kho_n_ph_i_c_t_nh_t_5_k_t);
                 }
                 else if(edtPassword.getText().toString().length() < 5) {
                     tvError.setVisibility(View.VISIBLE);
-                    tvError.setText("Mật khẩu phải có ít nhất 5 kí tự");
+                    tvError.setText(R.string.m_t_kh_u_ph_i_c_t_nh_t_5_k_t);
                 }
                 else {
                     login();

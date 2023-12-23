@@ -4,11 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -34,11 +37,16 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -66,8 +74,8 @@ public class OrderActivity extends AppCompatActivity {
     Double price, totalPrice;
     int quantity;
     String cinema, method;
-    final String[] listCinema = {"CGV Cinemas", "Lotte Cinema", "Galaxy Cinema", "BHD Star Cineplex", "Vincom Cinema", "MegaGS Cinemas", "Dcine", "Cinebox"};
-    final String[] listMethod = {"Tiền mặt", "Thẻ tín dụng", "Ví điện tử (PayPal)"};
+    String[] listCinema;
+    String[] listMethod;
     DecimalFormat formatter;
     boolean isUseCoin = false;
     final int CreditCardCode = 1001;
@@ -94,6 +102,9 @@ public class OrderActivity extends AppCompatActivity {
         areaSelect = findViewById(R.id.areaSelect);
 
         areaSelect.setVisibility(View.GONE);
+
+        listCinema = new String[]{"CGV Cinemas", "Lotte Cinema", "Galaxy Cinema", "BHD Star Cineplex", "Vincom Cinema", "MegaGS Cinemas", "Dcine", "Cinebox"};
+        listMethod = new String[]{getString(R.string.ti_n_m_t), getString(R.string.th_t_n_d_ng), getString(R.string.v_i_n_t_paypal)};
 
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
@@ -270,7 +281,7 @@ public class OrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(quantity <= 0) {
-                    Toast.makeText(OrderActivity.this, "Vui lòng chọn chỗ ngồi", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OrderActivity.this, R.string.vui_l_ng_ch_n_ch_ng_i, Toast.LENGTH_SHORT).show();
                 }
                 else {
                     showDialogConfirm();
@@ -391,20 +402,20 @@ public class OrderActivity extends AppCompatActivity {
     private void showDialogCoin(int coin) throws Resources.NotFoundException {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
-        alertDialog.setTitle("Không đủ xu");
+        alertDialog.setTitle(R.string.kh_ng_xu);
         alertDialog.setIcon(R.drawable.icons8_coin_75);
 
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
 
         TextView tvCoin = new TextView(this);
-        tvCoin.setText("Xu hiện tại: " + coin);
+        tvCoin.setText(R.string.xu_hi_n_t_i + coin);
         tvCoin.setTextSize(20);
         tvCoin.setTextColor(Color.parseColor("#2596be"));
         layout.addView(tvCoin);
 
         TextView tvNotification = new TextView(this);
-        tvNotification.setText("Xu tối thiểu cần: 100");
+        tvNotification.setText(R.string.xu_t_i_thi_u_c_n_100);
         tvNotification.setTextSize(20);
         tvNotification.setTextColor(Color.parseColor("#FFEA0909"));
         layout.addView(tvNotification);
@@ -413,7 +424,7 @@ public class OrderActivity extends AppCompatActivity {
         layout.setBackgroundColor(Color.parseColor("#eeeee4"));
         alertDialog.setView(layout);
 
-        alertDialog.setPositiveButton("Đóng", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(R.string.ng, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {}
         });
@@ -424,7 +435,7 @@ public class OrderActivity extends AppCompatActivity {
     private void showDialogConfirm() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
-        alertDialog.setTitle("Xác nhận thông tin vé");
+        alertDialog.setTitle(R.string.x_c_nh_n_th_ng_tin_v);
         alertDialog.setIcon(R.drawable.baseline_payment_24);
 
         LinearLayout outerLayout = new LinearLayout(this);
@@ -440,7 +451,7 @@ public class OrderActivity extends AppCompatActivity {
         nameLayoutParams.setMargins(0, 10, 0, 0);
         nameLayout.setLayoutParams(nameLayoutParams);
         TextView tvTitleName = new TextView(this);
-        tvTitleName.setText(Html.fromHtml("<i>Tên phim:</i>"));
+        tvTitleName.setText(Html.fromHtml(getString(R.string.i_t_n_phim_i)));
         tvTitleName.setTextSize(20);
         tvTitleName.setWidth(350);
         nameLayout.addView(tvTitleName);
@@ -461,7 +472,7 @@ public class OrderActivity extends AppCompatActivity {
         dateLayoutParams.setMargins(0, 10, 0, 0);
         dateLayout.setLayoutParams(dateLayoutParams);
         TextView tvTitleDate = new TextView(this);
-        tvTitleDate.setText(Html.fromHtml("<i>Ngày chiếu:</i>"));
+        tvTitleDate.setText(Html.fromHtml(getString(R.string.i_ng_y_chi_u_i)));
         tvTitleDate.setTextSize(20);
         tvTitleDate.setWidth(350);
         dateLayout.addView(tvTitleDate);
@@ -482,7 +493,7 @@ public class OrderActivity extends AppCompatActivity {
         timeLayoutParams.setMargins(0, 10, 0, 0);
         timeLayout.setLayoutParams(timeLayoutParams);
         TextView tvTitleTime = new TextView(this);
-        tvTitleTime.setText(Html.fromHtml("<i>Suất chiếu:</i>"));
+        tvTitleTime.setText(Html.fromHtml(getString(R.string.i_su_t_chi_u_i)));
         tvTitleTime.setTextSize(20);
         tvTitleTime.setWidth(350);
         timeLayout.addView(tvTitleTime);
@@ -503,7 +514,7 @@ public class OrderActivity extends AppCompatActivity {
         cinemaLayoutParams.setMargins(0, 10, 0, 0);
         cinemaLayout.setLayoutParams(cinemaLayoutParams);
         TextView tvTitleCinema = new TextView(this);
-        tvTitleCinema.setText(Html.fromHtml("<i>Tên rạp:</i>"));
+        tvTitleCinema.setText(Html.fromHtml(getString(R.string.i_t_n_r_p_i)));
         tvTitleCinema.setTextSize(20);
         tvTitleCinema.setWidth(350);
         cinemaLayout.addView(tvTitleCinema);
@@ -524,7 +535,7 @@ public class OrderActivity extends AppCompatActivity {
         numberLayoutParams.setMargins(0, 10, 0, 0);
         numberTicketLayout.setLayoutParams(numberLayoutParams);
         TextView tvTitleNumberTicket = new TextView(this);
-        tvTitleNumberTicket.setText(Html.fromHtml("<i>Số lượng vé:</i>"));
+        tvTitleNumberTicket.setText(Html.fromHtml(getString(R.string.i_s_l_ng_v_i)));
         tvTitleNumberTicket.setTextSize(20);
         tvTitleNumberTicket.setWidth(350);
         numberTicketLayout.addView(tvTitleNumberTicket);
@@ -552,7 +563,7 @@ public class OrderActivity extends AppCompatActivity {
         selectedLayoutParams.setMargins(0, 10, 0, 0);
         selectedLayout.setLayoutParams(selectedLayoutParams);
         TextView tvTitleSelected = new TextView(this);
-        tvTitleSelected.setText(Html.fromHtml("<i>Chỗ ngồi:</i>"));
+        tvTitleSelected.setText(Html.fromHtml(getString(R.string.i_ch_ng_i_i)));
         tvTitleSelected.setTextSize(20);
         tvTitleSelected.setWidth(350);
         selectedLayout.addView(tvTitleSelected);
@@ -573,7 +584,7 @@ public class OrderActivity extends AppCompatActivity {
         methodLayoutParams.setMargins(0, 10, 0, 0);
         methodLayout.setLayoutParams(methodLayoutParams);
         TextView tvTitleMethod = new TextView(this);
-        tvTitleMethod.setText(Html.fromHtml("<i>Phương thức:</i>"));
+        tvTitleMethod.setText(Html.fromHtml(getString(R.string.i_ph_ng_th_c_i)));
         tvTitleMethod.setTextSize(20);
         tvTitleMethod.setWidth(350);
         methodLayout.addView(tvTitleMethod);
@@ -594,7 +605,7 @@ public class OrderActivity extends AppCompatActivity {
         totalLayoutParams.setMargins(0, 10, 0, 0);
         totalLayout.setLayoutParams(totalLayoutParams);
         TextView tvTitleTotal = new TextView(this);
-        tvTitleTotal.setText(Html.fromHtml("<b>Tổng tiền:</b>"));
+        tvTitleTotal.setText(Html.fromHtml(getString(R.string.b_t_ng_ti_n_b)));
         tvTitleTotal.setTextSize(20);
         tvTitleTotal.setTextColor(Color.BLACK);
         tvTitleTotal.setWidth(350);
@@ -608,14 +619,14 @@ public class OrderActivity extends AppCompatActivity {
 
         outerLayout.setPadding(30, 0, 30, 0);
         alertDialog.setView(outerLayout);
-        alertDialog.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(R.string.dongy, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 requestPayment();
             }
         });
 
-        alertDialog.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton(R.string.h_y, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {}
         });
@@ -697,6 +708,13 @@ public class OrderActivity extends AppCompatActivity {
                             sessionManager.minusCoins();
                         }
                         sessionManager.bonusCoins(totalPrice);
+
+                        JSONObject account = json.getJSONObject("data");
+                        String idReminder = account.getString("_id");
+                        String movieName = account.getString("movieName");
+                        String date = account.getString("date");
+                        reminderMovie(idReminder, movieName, date);
+                        sessionManager.setStatusReminderMovie(idReminder);
                     }
 
                     Log.d("success", "success");
@@ -709,7 +727,7 @@ public class OrderActivity extends AppCompatActivity {
                                 finish();
                             }
                             if(code == 2) {
-                                Toast.makeText(OrderActivity.this, "Thanh toán thất bại", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(OrderActivity.this, R.string.thanh_to_n_th_t_b_i, Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -718,5 +736,45 @@ public class OrderActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void reminderMovie(String id, String movieName, String date) {
+        AlarmManager alarmManager;
+        PendingIntent pendingIntent;
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+        Date dateMovie = null;
+        try {
+            dateMovie = dateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+
+        if (date != null) {
+            calendar.setTime(dateMovie);
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+        }
+
+        Intent intent = new Intent(OrderActivity.this, ReminderReceiver.class);
+        intent.setAction("Reminder");
+        intent.putExtra("name", movieName);
+        intent.putExtra("date", date);
+
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        int hashValueId = id.hashCode();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            pendingIntent = PendingIntent.getBroadcast(OrderActivity.this, hashValueId, intent, PendingIntent.FLAG_IMMUTABLE);
+        } else {
+            pendingIntent = PendingIntent.getBroadcast(OrderActivity.this, hashValueId, intent, PendingIntent.FLAG_MUTABLE);
+        }
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+        Log.d("message", getString(R.string.g_i_nh_c_nh) + movieName);
     }
 }

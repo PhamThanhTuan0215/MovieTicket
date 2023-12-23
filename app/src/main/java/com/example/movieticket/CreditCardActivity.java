@@ -9,14 +9,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -33,7 +31,7 @@ public class CreditCardActivity extends AppCompatActivity {
     CheckedTextView checkedTvLogout;
     Button btnLogin, btnPayment;
     SessionManager sessionManager;
-    final String[] listBank = {"Vietcombank", "VietinBank", "BIDV", "Agribank", "Sacombank", "Techcombank", "MB Bank", "ACB", "VPBank", "Eximbank"};
+    String[] listBank;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +57,8 @@ public class CreditCardActivity extends AppCompatActivity {
         tvError.setVisibility(View.GONE);
         areaPayment.setVisibility(View.GONE);
         tvPrice.setText(getIntent().getStringExtra("price"));
+
+        listBank = new String[]{"Vietcombank", "VietinBank", "BIDV", "Agribank", "Sacombank", "Techcombank", "MB Bank", "ACB", "VPBank", "Eximbank"};
 
         sessionManager = new SessionManager(this);
         checkLogin();
@@ -101,19 +101,19 @@ public class CreditCardActivity extends AppCompatActivity {
                 String cardDate = edtCardDate.getText().toString();
 
                 if(cardBank.equals("") || cardUsername.equals("") || cardPassword.equals("") || cardNumber.equals("") || cardDate.equals("")) {
-                    tvError.setText("Thiếu thông tin");
+                    tvError.setText(R.string.thi_u_th_ng_tin);
                     tvError.setVisibility(View.VISIBLE);
                 }
                 else if(cardUsername.length() < 5) {
-                    tvError.setText("Tên chủ sở hữu có ít nhất 5 ký tự");
+                    tvError.setText(R.string.t_n_ch_s_h_u_c_t_nh_t_5_k_t);
                     tvError.setVisibility(View.VISIBLE);
                 }
                 else if(cardPassword.length() < 5) {
-                    tvError.setText("Mật khẩu có ít nhất 5 ký tự");
+                    tvError.setText(R.string.m_t_kh_u_c_t_nh_t_5_k_t);
                     tvError.setVisibility(View.VISIBLE);
                 }
                 else if(cardNumber.length() < 5) {
-                    tvError.setText("Số thẻ có ít nhất 5 ký tự");
+                    tvError.setText(R.string.s_th_c_t_nh_t_5_k_t);
                     tvError.setVisibility(View.VISIBLE);
                 }
                 else {

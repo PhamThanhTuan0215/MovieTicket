@@ -56,7 +56,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:padding="5dp"
-                        android:text="Thể loại:"
+                        android:text="@string/th_lo_i"
                         android:textSize="20dp"
                         android:textStyle="italic" />
 
@@ -83,7 +83,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:padding="5dp"
-                        android:text="Diễn viên:"
+                        android:text="@string/di_n_vi_n"
                         android:textSize="20dp"
                         android:textStyle="italic" />
 
@@ -109,7 +109,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:padding="5dp"
-                        android:text="Ngày chiếu:"
+                        android:text="@string/ng_y_chi_u"
                         android:textSize="20dp"
                         android:textStyle="italic" />
 
@@ -135,7 +135,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:padding="5dp"
-                        android:text="Giá vé:"
+                        android:text="@string/gi_v"
                         android:textSize="20dp"
                         android:textStyle="italic" />
 
@@ -163,7 +163,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:text="Giới thiệu phim:"
+                    android:text="@string/gi_i_thi_u_phim"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
@@ -208,7 +208,7 @@
                         android:textSize="18sp"
                         android:padding="10sp"
                         android:backgroundTint="#435BB3"
-                        android:text="Xem trailer" />
+                        android:text="@string/xem_trailer" />
                 </LinearLayout>
 
                 <WebView
@@ -225,7 +225,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="10sp"
-        android:text="Đặt vé phim"
+        android:text="@string/t_v_phim"
         android:backgroundTint="#2DD6B5"
         android:textColor="@color/black"
         android:textStyle="bold"

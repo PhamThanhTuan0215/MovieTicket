@@ -9,11 +9,15 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -40,8 +44,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -107,6 +109,40 @@ public class HomeActivity extends AppCompatActivity {
 
                 Picasso.get().load(dataMovies.get(position).url_avatar).into(imgView);
 
+                Button btnSearch = itemView.findViewById(R.id.btnSearch);
+
+                btnSearch.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                        shareIntent.setType("text/plain");
+                        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.chia_s_th_ng_tin_phim));
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.t_n_phim) + " " + dataMovies.get(position).name + "\n" + getString(R.string.ng_y_chi_u) + " "
+                                + dataMovies.get(position).date + "\n" + getString(R.string.gi_v) + " " + formatter.format(dataMovies.get(position).price));
+                        startActivity(Intent.createChooser(shareIntent, getString(R.string.chia_s_th_ng_tin_phim)));
+                    }
+                });
+
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(HomeActivity.this, DetailsMovieActivity.class);
+                        intent.putExtra("id", dataMovies.get(position).id);
+                        intent.putExtra("name", dataMovies.get(position).name);
+                        intent.putExtra("date", dataMovies.get(position).date);
+                        intent.putExtra("price", dataMovies.get(position).price);
+                        intent.putExtra("description", dataMovies.get(position).description);
+                        intent.putExtra("url_avatar", dataMovies.get(position).url_avatar);
+                        intent.putExtra("url_trailer", dataMovies.get(position).url_trailer);
+                        String category = String.join(", ", dataMovies.get(position).category);
+                        intent.putExtra("category", category);
+                        String actor = String.join(", ", dataMovies.get(position).actor);
+                        intent.putExtra("actor", actor);
+
+                        startActivity(intent);
+                    }
+                });
+
                 return itemView;
             }
         };
@@ -149,26 +185,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(HomeActivity.this, DetailsMovieActivity.class);
-                intent.putExtra("id", dataMovies.get(position).id);
-                intent.putExtra("name", dataMovies.get(position).name);
-                intent.putExtra("date", dataMovies.get(position).date);
-                intent.putExtra("price", dataMovies.get(position).price);
-                intent.putExtra("description", dataMovies.get(position).description);
-                intent.putExtra("url_avatar", dataMovies.get(position).url_avatar);
-                intent.putExtra("url_trailer", dataMovies.get(position).url_trailer);
-                String category = String.join(", ", dataMovies.get(position).category);
-                intent.putExtra("category", category);
-                String actor = String.join(", ", dataMovies.get(position).actor);
-                intent.putExtra("actor", actor);
-
-                startActivity(intent);
-            }
-        });
-
         areaHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -201,7 +217,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
             });
 
-            tvStyleSearch.setText("Từ khóa: " + keyword);
+            tvStyleSearch.setText(getString(R.string.t_kh_a) + keyword);
         }
         else if(category != null) {
             listMovies.forEach(movie -> {
@@ -210,7 +226,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
             });
 
-            tvStyleSearch.setText("Thể loại: " + category);
+            tvStyleSearch.setText(getString(R.string.th_lo_i) + category);
         }
         else if(actor != null) {
             listMovies.forEach(movie -> {
@@ -219,14 +235,14 @@ public class HomeActivity extends AppCompatActivity {
                 }
             });
 
-            tvStyleSearch.setText("Diễn viên: " + actor);
+            tvStyleSearch.setText(getString(R.string.di_n_vi_n) + actor);
         }
         else {
             listMovies.forEach(movie -> {
                 dataMovies.add(movie);
             });
 
-            tvStyleSearch.setText("(Tất cả phim)");
+            tvStyleSearch.setText(R.string.t_t_c_phim);
         }
 
         adapter.notifyDataSetChanged();
@@ -254,8 +270,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void openSelectActor() {
-        String[] actorItems = {"Leonardo DiCaprio", "Ellen Page", "Tim Robbins", "Morgan Freeman", "Christian Bale",
-                "Heath Ledger", "Tom Hanks", "Robin Wright", "Keanu Reeves", "Carrie-Anne Moss"};
+        String[] actorItems = {"Leonardo DiCaprio", "Ellen Page", "Tim Robbins", "Morgan Freeman", "Christian Bale", "Heath Ledger", "Matt Damon", "Jack Nicholson", "Tom Hanks",
+                "Robin Wright", "Keanu Reeves", "Carrie-Anne Moss", "Sam Worthington", "Zoe Saldana", "Matthew McConaughey", "Anne Hathaway", "John Travolta", "Uma Thurman"};
 
         Arrays.sort(actorItems);
 
@@ -362,7 +378,7 @@ public class HomeActivity extends AppCompatActivity {
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 
-        Log.d("message", "gửi nhắc nhở: " + movieName);
+        Log.d("message", getString(R.string.g_i_nh_c_nh) + movieName);
     }
 
     private void getMoviesToReminder() {
@@ -434,5 +450,53 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == R.id.menu_language) {
+            openSelectLanguage();
+            return true;
+        }
+
+        return false;
+    }
+
+    private void openSelectLanguage() {
+        String[] languageItems = { getString(R.string.ti_ng_vi_t), getString(R.string.ti_ng_anh), getString(R.string.ti_ng_h_n)};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+        builder.setItems(languageItems, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String language = languageItems[which];
+                if(language.equals(languageItems[0])) {
+                    changeLanguage("vn");
+                }
+                else if(language.equals(languageItems[1])) {
+                    changeLanguage("en");
+                }
+                else if(language.equals(languageItems[2])) {
+                    changeLanguage("kr");
+                }
+                HomeActivity.this.recreate();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void changeLanguage(String language) {
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        Locale locale = new Locale(language);
+        configuration.setLocale(locale);
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
     }
 }

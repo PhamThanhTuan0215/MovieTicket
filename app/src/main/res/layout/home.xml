@@ -26,7 +26,7 @@
             android:background="@drawable/rounded_edittext_bg"
             android:drawableRight="@drawable/baseline_search_24"
             android:ems="10"
-            android:hint="Tên phim..."
+            android:hint="@string/s_t_n_phim"
             android:textSize="20sp"
             android:backgroundTint="#E6E1E1"
             android:inputType="text"
@@ -46,7 +46,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="#059AA8"
                 android:padding="10dp"
-                android:text="Thể loại"
+                android:text="@string/s_th_lo_i"
                 android:textSize="16dp" />
 
             <Button
@@ -57,7 +57,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="#A87F05"
                 android:padding="10dp"
-                android:text="Diễn viên"
+                android:text="@string/s_di_n_vi_n"
                 android:textSize="16dp" />
 
             <Button
@@ -68,7 +68,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="#403C3F"
                 android:padding="10dp"
-                android:text="Tất cả"
+                android:text="@string/t_t_c"
                 android:textSize="16dp" />
         </LinearLayout>
 
@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="Danh sách phim"
+                android:text="@string/danh_s_ch_phim"
                 android:textColor="@color/black"
                 android:textSize="20dp"
                 android:textStyle="bold" />
@@ -97,7 +97,7 @@
                 android:textSize="20dp"
                 android:padding="5dp"
                 android:textColor="#E32727"
-                android:text="Tất cả phim" />
+                android:text="@string/t_t_c_phim" />
 
             <LinearLayout
                 android:id="@+id/areaEmpty"
@@ -120,7 +120,7 @@
                     android:textSize="20dp"
                     android:gravity="center"
                     android:textColor="#9B0ECF"
-                    android:text="Không tìm thấy kết quả phù hợp" />
+                    android:text="@string/kh_ng_t_m_th_y_k_t_qu_ph_h_p" />
             </LinearLayout>
 
             <ListView
@@ -160,7 +160,7 @@
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:textSize="16dp"
-                android:text="Trang chủ" />
+                android:text="@string/trang_ch" />
         </LinearLayout>
 
         <LinearLayout
@@ -183,7 +183,7 @@
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:textSize="16dp"
-                android:text="Lịch sử đặt vé" />
+                android:text="@string/l_ch_s_t_v" />
         </LinearLayout>
 
         <LinearLayout
@@ -206,7 +206,7 @@
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:textSize="16dp"
-                android:text="Tài khoản" />
+                android:text="@string/t_i_kho_n" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

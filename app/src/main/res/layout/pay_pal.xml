@@ -48,7 +48,7 @@
             android:drawableLeft="@drawable/baseline_person_24"
             android:drawablePadding="10sp"
             android:ems="10"
-            android:hint="Tên tài khoản"
+            android:hint="@string/t_n_t_i_kho_n"
             android:inputType="text"
             android:padding="10sp"
             android:textSize="25sp" />
@@ -61,7 +61,7 @@
             android:drawableLeft="@drawable/baseline_password_24"
             android:drawablePadding="10sp"
             android:ems="10"
-            android:hint="Mật khẩu"
+            android:hint="@string/m_t_kh_u"
             android:inputType="textPassword"
             android:padding="10sp"
             android:textSize="25sp" />
@@ -75,7 +75,7 @@
             android:padding="5sp"
             android:visibility="gone"
             android:textColor="#FF0000"
-            android:text="Thông báo lỗi" />
+            android:text="@string/th_ng_b_o_l_i" />
 
         <Button
             android:id="@+id/btnLogin"
@@ -84,7 +84,7 @@
             android:layout_marginHorizontal="20sp"
             android:backgroundTint="#418CE4"
             android:padding="15sp"
-            android:text="Đăng nhập"
+            android:text="@string/ng_nh_p"
             android:textSize="20sp" />
 
     </LinearLayout>
@@ -103,7 +103,7 @@
             android:drawableLeft="@drawable/baseline_person_24"
             android:drawablePadding="10sp"
             android:padding="10sp"
-            android:text="Tên tài khoản"
+            android:text="@string/t_n_t_i_kho_n"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -114,7 +114,7 @@
             android:drawableLeft="@drawable/baseline_logout_24"
             android:drawablePadding="10sp"
             android:padding="10sp"
-            android:text="Đăng xuất"
+            android:text="@string/ng_xu_t"
             android:textColor="#0B81A5"
             android:textSize="25sp"
             android:textStyle="bold|italic" />
@@ -131,7 +131,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="10sp"
-                android:text="Số tiền thanh toán:"
+                android:text="@string/s_ti_n_thanh_to_n"
                 android:textSize="20sp"
                 android:textStyle="italic" />
 
@@ -154,7 +154,7 @@
             android:layout_marginHorizontal="20sp"
             android:backgroundTint="#418CE4"
             android:padding="15sp"
-            android:text="Đồng ý"
+            android:text="@string/dongy"
             android:textSize="20sp" />
 
     </LinearLayout>

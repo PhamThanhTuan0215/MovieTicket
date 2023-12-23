@@ -46,7 +46,7 @@
                     android:textColor="#FA0000"
                     android:textSize="30sp"
                     android:textStyle="italic"
-                    android:text="Vui lòng đăng nhập"/>
+                    android:text="@string/vui_l_ng_ng_nh_p"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -60,7 +60,7 @@
             android:textStyle="italic"
             android:gravity="center"
             android:visibility="gone"
-            android:text="Danh sách đặt vé trống" />
+            android:text="@string/danh_s_ch_t_v_tr_ng" />
 
         <ListView
             android:id="@+id/listViewOrder"
@@ -96,7 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Trang chủ"
+                android:text="@string/trang_ch"
                 android:textColor="@color/white"
                 android:textSize="16dp" />
         </LinearLayout>
@@ -119,7 +119,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Lịch sử đặt vé"
+                android:text="@string/l_ch_s_t_v"
                 android:textColor="@color/white"
                 android:textSize="16dp" />
         </LinearLayout>
@@ -142,7 +142,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Tài khoản"
+                android:text="@string/t_i_kho_n"
                 android:textColor="@color/white"
                 android:textSize="16dp" />
         </LinearLayout>

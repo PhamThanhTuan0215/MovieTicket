@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Xếp hạng của tôi"
+            android:text="@string/x_p_h_ng_c_a_t_i"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -39,7 +39,7 @@
             android:background="@drawable/rounded_edittext_bg"
             android:backgroundTint="#E6E1E1"
             android:ems="10"
-            android:hint="Viết đánh giá"
+            android:hint="@string/vi_t_nh_gi"
             android:inputType="text"
             android:padding="15sp"
             android:textSize="20sp" />
@@ -58,7 +58,7 @@
                 android:gravity="center"
                 android:paddingHorizontal="50sp"
                 android:paddingVertical="10sp"
-                android:text="Ẩn"
+                android:text="@string/n"
                 android:layout_marginRight="20sp"
                 android:textSize="20sp" />
 
@@ -70,7 +70,7 @@
                 android:gravity="center"
                 android:paddingHorizontal="50sp"
                 android:paddingVertical="10sp"
-                android:text="Gửi"
+                android:text="@string/g_i"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -94,7 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Xếp hạng trung bình"
+            android:text="@string/x_p_h_ng_trung_b_nh"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -135,7 +135,7 @@
                 android:textSize="25sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:text="Tên phim" />
+                android:text="Name" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -152,7 +152,7 @@
                     android:textSize="20sp"
                     android:backgroundTint="#3DCFAC"
                     android:layout_marginHorizontal="20sp"
-                    android:text="Đánh giá" />
+                    android:text="@string/nh_gi" />
             </LinearLayout>
 
         </LinearLayout>
@@ -174,7 +174,7 @@
         android:textSize="20sp"
         android:padding="5sp"
         android:textColor="#FF0000"
-        android:text="Danh sách các đánh giá" />
+        android:text="@string/danh_s_ch_c_c_nh_gi" />
 
     <ListView
         android:id="@+id/listViewReview"

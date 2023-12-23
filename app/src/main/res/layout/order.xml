@@ -41,7 +41,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:padding="5dp"
-                    android:text="Giá vé:"
+                    android:text="@string/gi_v"
                     android:textSize="20dp"
                     android:textStyle="italic" />
 
@@ -68,7 +68,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:padding="5dp"
-                    android:text="Ngày chiếu:"
+                    android:text="@string/ng_y_chi_u"
                     android:textSize="20dp"
                     android:textStyle="italic" />
 
@@ -91,7 +91,7 @@
                 android:layout_marginVertical="10sp"
                 android:backgroundTint="#47C3B0"
                 android:padding="10sp"
-                android:text="Chọn suất chiếu"
+                android:text="@string/ch_n_su_t_chi_u"
                 android:textSize="16sp" />
 
             <LinearLayout
@@ -111,7 +111,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:padding="5dp"
-                        android:text="Suất chiếu:"
+                        android:text="@string/su_t_chi_u"
                         android:textSize="20dp"
                         android:textStyle="italic" />
 
@@ -137,7 +137,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:padding="5dp"
-                        android:text="Rạp phim:"
+                        android:text="@string/r_p_phim"
                         android:textSize="20dp"
                         android:textStyle="italic" />
 
@@ -153,7 +153,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:text="Chọn vị trí ngồi:"
+                    android:text="@string/ch_n_v_tr_ng_i"
                     android:textSize="18dp"
                     android:textStyle="bold" />
 
@@ -176,7 +176,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:padding="5dp"
-                        android:text="Số lượng vé:"
+                        android:text="@string/s_l_ng_v"
                         android:textSize="20dp"
                         android:textStyle="italic" />
 
@@ -197,7 +197,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableRight="@drawable/icons8_coin_25"
-                    android:text="Áp dụng xu thưởng: 100"
+                    android:text="@string/p_d_ng_xu_th_ng_100"
                     android:textColor="#02911A"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -213,7 +213,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:padding="5dp"
-                        android:text="Tổng tiền:"
+                        android:text="@string/t_ng_ti_n"
                         android:textSize="20dp"
                         android:textStyle="italic" />
 
@@ -241,7 +241,7 @@
                         android:layout_weight="2"
                         android:drawableRight="@drawable/baseline_payment_24"
                         android:padding="5dp"
-                        android:text="Phương thức thanh toán:"
+                        android:text="@string/ph_ng_th_c_thanh_to_n"
                         android:textSize="20dp"
                         android:textStyle="italic" />
 
@@ -260,7 +260,7 @@
                     android:layout_marginHorizontal="40sp"
                     android:layout_weight="1"
                     android:padding="10sp"
-                    android:text="Xác nhận"
+                    android:text="@string/x_c_nh_n"
                     android:textSize="20sp" />
 
             </LinearLayout>

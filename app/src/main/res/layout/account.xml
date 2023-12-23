@@ -34,7 +34,7 @@
                 android:backgroundTint="#2DDBF1"
                 android:drawableLeft="@drawable/baseline_login_24"
                 android:padding="10dp"
-                android:text="Đăng nhập"
+                android:text="@string/ng_nh_p"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:visibility="visible" />
@@ -48,7 +48,7 @@
                 android:backgroundTint="#29B60A"
                 android:drawableLeft="@drawable/baseline_app_registration_24"
                 android:padding="10dp"
-                android:text="Đăng ký"
+                android:text="@string/ng_k"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:visibility="visible" />
@@ -148,7 +148,7 @@
                 android:backgroundTint="#21DDB2"
                 android:drawableLeft="@drawable/baseline_manage_accounts_24"
                 android:padding="10dp"
-                android:text="Thay đổi thông tin"
+                android:text="@string/thay_i_th_ng_tin"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -161,7 +161,7 @@
                 android:backgroundTint="#C9E9ED"
                 android:drawableLeft="@drawable/baseline_logout_24"
                 android:padding="10dp"
-                android:text="Đăng xuất"
+                android:text="@string/ng_xu_t"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -195,7 +195,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Trang chủ"
+                android:text="@string/trang_ch"
                 android:textColor="@color/white"
                 android:textSize="16dp" />
         </LinearLayout>
@@ -218,7 +218,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Lịch sử đặt vé"
+                android:text="@string/l_ch_s_t_v"
                 android:textColor="@color/white"
                 android:textSize="16dp" />
         </LinearLayout>
@@ -241,7 +241,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Tài khoản"
+                android:text="@string/t_i_kho_n"
                 android:textColor="@color/white"
                 android:textSize="16dp" />
         </LinearLayout>

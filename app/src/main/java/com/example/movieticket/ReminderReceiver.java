@@ -22,8 +22,8 @@ public class ReminderReceiver extends BroadcastReceiver {
             String date = intent.getStringExtra("date");
 
             Notification notification = new NotificationCompat.Builder(context, MyApplication.CHANNEL_ID)
-                    .setContentTitle("Nhắn nhở lịch chiếu")
-                    .setContentText("Lịch chiếu cho phim " + name + " sắp diễn ra (" + date + ")")
+                    .setContentTitle(context.getString(R.string.nh_n_nh_l_ch_chi_u))
+                    .setContentText(context.getString(R.string.l_ch_chi_u_cho_phim) + name + context.getString(R.string.s_p_di_n_ra) + date + ")")
                     .setSmallIcon(R.drawable.icon_notifications_24)
                     .setColor(Color.RED)
                     .setCategory(NotificationCompat.CATEGORY_ALARM)
@@ -32,7 +32,7 @@ public class ReminderReceiver extends BroadcastReceiver {
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
             if(notificationManager != null) {
                 notificationManager.notify(getNotificationId(), notification);
-                Log.d("message", "đến hẹn: " + name);
+                Log.d("message", context.getString(R.string.n_h_n) + name);
             }
         }
     }

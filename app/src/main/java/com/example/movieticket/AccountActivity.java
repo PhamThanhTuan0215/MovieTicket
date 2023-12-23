@@ -1,5 +1,6 @@
 package com.example.movieticket;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,9 +9,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -20,6 +24,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Arrays;
+import java.util.Locale;
 
 public class AccountActivity extends AppCompatActivity {
 
@@ -149,17 +156,17 @@ public class AccountActivity extends AppCompatActivity {
 
     private void showDialogLogout() throws Resources.NotFoundException {
         new AlertDialog.Builder(this)
-                .setTitle("Xác nhận đăng xuất")
-                .setMessage("Bạn có muốn đăng xuất?")
+                .setTitle(R.string.x_c_nh_n_ng_xu_t)
+                .setMessage(R.string.b_n_c_mu_n_ng_xu_t)
                 .setIcon(R.drawable.baseline_logout_24)
-                .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.c, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         sessionManager.logout();
                         checkLogin();
                     }
                 })
-                .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.h_y, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {}
                 }).show();
@@ -167,10 +174,10 @@ public class AccountActivity extends AppCompatActivity {
 
     private void showDialogRegisterSuccess() throws Resources.NotFoundException {
         new AlertDialog.Builder(this)
-                .setTitle("Trạng thái đăng ký")
-                .setMessage("Đăng ký tài khoản thành công")
+                .setTitle(R.string.tr_ng_th_i_ng_k)
+                .setMessage(R.string.ng_k_t_i_kho_n_th_nh_c_ng)
                 .setIcon(R.drawable.baseline_update_success)
-                .setPositiveButton("Đóng", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.ng, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -180,10 +187,10 @@ public class AccountActivity extends AppCompatActivity {
 
     private void showDialogUpdateSuccess() throws Resources.NotFoundException {
         new AlertDialog.Builder(this)
-                .setTitle("Trạng thái cập nhật")
-                .setMessage("Cập nhật thông tin tài khoản thành công")
+                .setTitle(R.string.tr_ng_th_i_c_p_nh_t)
+                .setMessage(R.string.c_p_nh_t_th_ng_tin_t_i_kho_n_th_nh_c_ng)
                 .setIcon(R.drawable.baseline_update_success)
-                .setPositiveButton("Đóng", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.ng, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -194,26 +201,26 @@ public class AccountActivity extends AppCompatActivity {
     private void showDialogCoin() throws Resources.NotFoundException {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
-        alertDialog.setTitle("Xu thưởng");
+        alertDialog.setTitle(R.string.xu_th_ng);
         alertDialog.setIcon(R.drawable.icons8_coin_75);
 
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
 
         TextView tvCoin = new TextView(this);
-        tvCoin.setText("Xu hiện tại: " + coin);
+        tvCoin.setText(getString(R.string.xu_hi_n_t_i) + coin);
         tvCoin.setTextSize(20);
         tvCoin.setTextColor(Color.parseColor("#2596be"));
         layout.addView(tvCoin);
 
         TextView tvNotification = new TextView(this);
-        tvNotification.setText("Nhận 10 xu mỗi 100.000 VND tiền vé thanh toán");
+        tvNotification.setText(R.string.nh_n_10_xu_m_i_100_000_vnd_ti_n_v_thanh_to_n);
         tvNotification.setTextSize(20);
         tvNotification.setTextColor(Color.parseColor("#FFEA0909"));
         layout.addView(tvNotification);
 
         TextView tvTip = new TextView(this);
-        tvTip.setText("Sử dụng 100 xu để giảm 50% tổng tiền thanh toán giá vé");
+        tvTip.setText(R.string.s_d_ng_100_xu_gi_m_50_t_ng_ti_n_thanh_to_n_gi_v);
         tvTip.setTextSize(20);
         tvTip.setTextColor(Color.parseColor("#FFEA0909"));
         layout.addView(tvTip);
@@ -222,7 +229,7 @@ public class AccountActivity extends AppCompatActivity {
         layout.setBackgroundColor(Color.parseColor("#eeeee4"));
         alertDialog.setView(layout);
 
-        alertDialog.setPositiveButton("Đóng", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(R.string.ng, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {}
         });
@@ -259,5 +266,53 @@ public class AccountActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == R.id.menu_language) {
+            openSelectLanguage();
+            return true;
+        }
+
+        return false;
+    }
+
+    private void openSelectLanguage() {
+        String[] languageItems = { getString(R.string.ti_ng_vi_t), getString(R.string.ti_ng_anh), getString(R.string.ti_ng_h_n)};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(AccountActivity.this);
+        builder.setItems(languageItems, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String language = languageItems[which];
+                if(language.equals(languageItems[0])) {
+                    changeLanguage("vn");
+                }
+                else if(language.equals(languageItems[1])) {
+                    changeLanguage("en");
+                }
+                else if(language.equals(languageItems[2])) {
+                    changeLanguage("kr");
+                }
+                AccountActivity.this.recreate();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void changeLanguage(String language) {
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        Locale locale = new Locale(language);
+        configuration.setLocale(locale);
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
     }
 }

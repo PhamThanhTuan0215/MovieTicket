@@ -135,10 +135,10 @@ public class ReviewActivity extends AppCompatActivity {
                 Float ratingMe = ratingBarMe.getRating();
                 String comment = edtComment.getText().toString();
                 if(ratingMe == 0) {
-                    Toast.makeText(ReviewActivity.this, "Chọn xếp hạng", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ReviewActivity.this, R.string.ch_n_x_p_h_ng, Toast.LENGTH_SHORT).show();
                 }
                 else if(comment.equals("")) {
-                    Toast.makeText(ReviewActivity.this, "Viết bình luận", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ReviewActivity.this, R.string.vi_t_b_nh_lu_n, Toast.LENGTH_SHORT).show();
                 }
                 else {
                     addReview(comment, ratingMe);

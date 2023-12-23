@@ -60,15 +60,15 @@ public class PayPalActivity extends AppCompatActivity {
                 String ppPassword = edtPPUsername.getText().toString();
 
                 if(ppUsername.equals("") || ppPassword.equals("")) {
-                    tvError.setText("Thiếu thông tin");
+                    tvError.setText(R.string.thi_u_th_ng_tin);
                     tvError.setVisibility(View.VISIBLE);
                 }
                 else if(ppUsername.length() < 5) {
-                    tvError.setText("Tên chủ sở hữu có ít nhất 5 ký tự");
+                    tvError.setText(R.string.t_n_ch_s_h_u_c_t_nh_t_5_k_t);
                     tvError.setVisibility(View.VISIBLE);
                 }
                 else if(ppPassword.length() < 5) {
-                    tvError.setText("Mật khẩu có ít nhất 5 ký tự");
+                    tvError.setText(R.string.m_t_kh_u_c_t_nh_t_5_k_t);
                     tvError.setVisibility(View.VISIBLE);
                 }
                 else {

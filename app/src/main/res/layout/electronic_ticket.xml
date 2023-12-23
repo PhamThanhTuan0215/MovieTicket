@@ -27,7 +27,7 @@
                 android:gravity="center"
                 android:textSize="30sp"
                 android:textColor="@color/black"
-                android:text="Vé điện tử" />
+                android:text="@string/v_i_n_t" />
 
             <View
                 android:id="@+id/view"
@@ -47,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:padding="5dp"
-                    android:text="Mã:"
+                    android:text="@string/m"
                     android:textSize="20sp"
                     android:textStyle="italic" />
 
@@ -74,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:padding="5dp"
-                    android:text="Tên phim:"
+                    android:text="@string/t_n_phim"
                     android:textSize="20sp"
                     android:textStyle="italic" />
 
@@ -101,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:padding="5dp"
-                    android:text="Người đặt:"
+                    android:text="@string/ng_i_t"
                     android:textSize="20sp"
                     android:textStyle="italic" />
 
@@ -128,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:padding="5dp"
-                    android:text="Ngày đặt vé:"
+                    android:text="@string/ng_y_t_v"
                     android:textSize="20sp"
                     android:textStyle="italic" />
 
@@ -155,7 +155,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:padding="5dp"
-                    android:text="Ngày chiếu:"
+                    android:text="@string/ng_y_chi_u"
                     android:textSize="20sp"
                     android:textStyle="italic" />
 
@@ -182,7 +182,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:padding="5dp"
-                    android:text="Suất chiếu:"
+                    android:text="@string/su_t_chi_u"
                     android:textSize="20sp"
                     android:textStyle="italic" />
 
@@ -209,7 +209,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:padding="5dp"
-                    android:text="Rạp phim:"
+                    android:text="@string/r_p_phim"
                     android:textSize="20sp"
                     android:textStyle="italic" />
 
@@ -236,7 +236,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:padding="5dp"
-                    android:text="Số lượng vé:"
+                    android:text="@string/s_l_ng_v"
                     android:textSize="20sp"
                     android:textStyle="italic" />
 
@@ -263,7 +263,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:padding="5dp"
-                    android:text="Vị trí ngồi:"
+                    android:text="@string/v_tr_ng_i"
                     android:textSize="20sp"
                     android:textStyle="italic" />
 
@@ -290,7 +290,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:padding="5dp"
-                    android:text="Phương thức thanh toán:"
+                    android:text="@string/ph_ng_th_c_thanh_to_n"
                     android:textSize="20sp"
                     android:textStyle="italic" />
 
@@ -300,7 +300,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:padding="5dp"
-                    android:text="Tiền mặt"
+                    android:text="@string/ti_n_m_t"
                     android:textSize="20sp"
                     android:textColor="@color/black" />
 
@@ -323,7 +323,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:padding="5dp"
-                    android:text="Tổng tiền:"
+                    android:text="@string/t_ng_ti_n"
                     android:textColor="@color/black"
                     android:textSize="25sp"
                     android:textStyle="bold" />
