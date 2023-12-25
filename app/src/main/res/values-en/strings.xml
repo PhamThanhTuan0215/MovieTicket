@@ -131,6 +131,7 @@
     <string name="g_i">Send</string>
     <string name="x_p_h_ng_trung_b_nh">Average rating</string>
     <string name="danh_s_ch_c_c_nh_gi">List of reviews</string>
-    <string name="chia_s">Search</string>
+    <string name="chia_s">Share</string>
     <string name="chia_s_th_ng_tin_phim">Share movie information</string>
+    <string name="xuhientai">"Current coin: "</string>
 </resources>

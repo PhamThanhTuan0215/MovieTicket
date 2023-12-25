@@ -409,7 +409,7 @@ public class OrderActivity extends AppCompatActivity {
         layout.setOrientation(LinearLayout.VERTICAL);
 
         TextView tvCoin = new TextView(this);
-        tvCoin.setText(R.string.xu_hi_n_t_i + coin);
+        tvCoin.setText(getString(R.string.xuhientai) + coin);
         tvCoin.setTextSize(20);
         tvCoin.setTextColor(Color.parseColor("#2596be"));
         layout.addView(tvCoin);

@@ -133,4 +133,5 @@
     <string name="danh_s_ch_c_c_nh_gi">리뷰 목록</string>
     <string name="chia_s">공유하다</string>
     <string name="chia_s_th_ng_tin_phim">영화 정보 공유</string>
+    <string name="xuhientai">"현재 동전: "</string>
 </resources>
