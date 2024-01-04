@@ -63,9 +63,10 @@ public class OrderActivity extends AppCompatActivity {
     Spinner spinnerCinema, spinnerMethod;
     CheckBox cbCoin;
     ScrollView scrollView;
-    GridView gridviewPosition;
-    ArrayAdapter adapter;
+    GridView gridviewPosition, gridviewPosition2;
+    ArrayAdapter adapter, adapter2;
     ArrayList<String> data = new ArrayList<>();
+    ArrayList<String> data2 = new ArrayList<>();
     LinearLayout areaSelect;
     ArrayList<Shift> listShift = new ArrayList<>();
     ArrayList<String> listPositionSelected = new ArrayList<>();
@@ -99,6 +100,7 @@ public class OrderActivity extends AppCompatActivity {
         scrollView = findViewById(R.id.scrollView);
         cbCoin = findViewById(R.id.cbCoin);
         gridviewPosition = findViewById(R.id.gridviewPosition);
+        gridviewPosition2 = findViewById(R.id.gridviewPosition2);
         areaSelect = findViewById(R.id.areaSelect);
 
         areaSelect.setVisibility(View.GONE);
@@ -120,8 +122,12 @@ public class OrderActivity extends AppCompatActivity {
         tvQuantity.setText("0");
         tvTotalPrice.setText("0 VND");
 
-        for(int i=1;i<=30;i++) {
+        for(int i=1;i<=15;i++) {
             data.add(i + "");
+        }
+
+        for(int i=16;i<=30;i++) {
+            data2.add(i + "");
         }
 
         adapter = new ArrayAdapter<String>(
@@ -174,6 +180,57 @@ public class OrderActivity extends AppCompatActivity {
         };
 
         gridviewPosition.setAdapter(adapter);
+
+        adapter2 = new ArrayAdapter<String>(
+                this,
+                R.layout.position_item,
+                R.id.btnPosition,
+                data2) {
+
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View itemView = super.getView(position, convertView, parent);
+
+                Button btnPosition = itemView.findViewById(R.id.btnPosition);
+
+                if(listPositionSelected.contains(data2.get(position))) {
+                    btnPosition.setBackgroundColor(Color.YELLOW);
+                }
+                else {
+                    btnPosition.setBackgroundColor(Color.parseColor("#4EB2BF"));
+                    btnPosition.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(!listPositionCurrent.contains(data2.get(position))) {
+                                listPositionCurrent.add(data2.get(position));
+                                btnPosition.setBackgroundColor(Color.parseColor("#57D849"));
+                            }
+                            else {
+                                listPositionCurrent.remove(data2.get(position));
+                                btnPosition.setBackgroundColor(Color.parseColor("#4EB2BF"));
+                            }
+
+                            quantity = listPositionCurrent.size();
+                            tvQuantity.setText(quantity + "");
+                            totalPrice = listPositionCurrent.size() * price;
+                            if(isUseCoin) {
+                                totalPrice = totalPrice * 0.5;
+                                tvTotalPrice.setText(formatter.format(totalPrice) + " (-50%)");
+                            }
+                            else {
+                                tvTotalPrice.setText(formatter.format(totalPrice));
+                            }
+                        }
+                    });
+                }
+
+                return itemView;
+            }
+
+        };
+
+        gridviewPosition2.setAdapter(adapter2);
         ArrayAdapter<String> adapterMethod = new ArrayAdapter<String>(this, R.layout.custom_spinner_item, listMethod) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
